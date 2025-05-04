@@ -1,0 +1,76 @@
+- **Name:  maximum subarray sum**
+- **Platform:  gfg**
+- **Difficulty: easy**
+- **Topic:**
+
+## **🔹 Problem Understanding:**
+
+Given an integer array **arr[].** You need to find the **maximum** sum of a subarray.
+
+**Examples:**
+
+```
+Input:arr[] = [2, 3, -8, 7, -1, 2, 3]
+Output:11
+Explanation:The subarray {7, -1, 2, 3} has the largest sum 11.
+
+```
+
+```
+Input:arr[] = [-2, -4]
+Output:-2
+Explanation:The subarray {-2} has the largest sum -2.
+```
+
+## **🔹 Approach / Logic:**
+
+intilize the sum = arr[0] and then add arr[i] if sum if goes below zero so sum =0;
+
+and again same procedure and storing maximum maxsum = arr[0] ; 
+
+check the if(maxsum <sum) maxsum = sum;
+
+## **🔹 Edge Cases:**
+
+if(sum<0){
+
+sum = 0;
+
+}
+
+**🔹 Code:**
+
+```java
+java
+CopyEdit
+// Your Java solution here
+lass Solution {
+    int maxSubarraySum(int[] arr) {
+        // Your code here
+        int n = arr.length;
+        int sum = arr[0];
+        int result = arr[0];
+        for(int i = 1; i<n; i++){
+            if(sum < 0){
+                sum = 0;
+            }
+            sum += arr[i];
+            if(result<sum){
+                result = sum;
+            }
+        }
+        return result;
+    }
+}
+
+```
+
+## **🔹 Learnings:**
+
+⭐ Kya naya seekha?
+
+- (Jo logic ya trick pehli baar samjhi ho)
+    - sum = arr[0]
+    - result = arr[0];
+- (Kaunsi galti hui thi, aur kaise sudhara)
+- (Aage se kaise yaad rakhenge)
