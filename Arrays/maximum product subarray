@@ -1,0 +1,98 @@
+
+# day11 **Maximum Product Subarray**
+
+- DSA revision format
+- **Name: maximum product Subarray**
+- **Platform:  gfg**
+- **Difficulty: easy**
+- **Topic:**
+
+## **🔹 Problem Understanding:**
+
+Given an array **arr[]** that contains positive and negative integers (may contain 0 as well). Find the **maximum** product that we can get in a subarray of **arr[]**.
+
+Note: It is guaranteed that the output fits in a 32-bit integer.
+
+**Examples**
+
+```
+Input: arr[] = [-2, 6, -3, -10, 0, 2]
+Output: 180
+Explanation: The subarray with maximum product is {6, -3, -10} with product = 6 * (-3) * (-10) = 180.
+```
+
+```
+Input: arr[] = [-1, -3, -10, 0, 6]
+Output: 30
+Explanation: The subarray with maximum product is {-3, -10} with product = (-3) * (-10) = 30.
+```
+
+## **🔹 Approach / Logic:**
+
+create 3 variable 
+
+maxProduct = arr[0];
+
+minProduct = arr[0];// handling -2,-4 value because they create +value 
+
+max = arr[0];
+
+after then 
+
+first store current max value temp = maxProduct then update
+
+maxProduct = Math.max(arr[i], Matht.max(arr[i]*maxProduct, arr[i]*minProduct))
+
+minProduct = Math.min(arr[i], Matht.min(arr[i]*temp, arr[i]*minProduct))
+
+check max = Math.max(max, maxprodct)
+
+return max; 
+
+## **🔹 Edge Cases:**
+
+focus on negetive value 
+
+minProduct use ;
+
+**🔹 Code:**
+
+```java
+java
+CopyEdit
+// Your Java solution here
+class Solution {
+    // Function to find maximum product subarray
+    int maxProduct(int[] arr) {
+        // code here
+        int n = arr.length;
+        int minProduct = arr[0];// handling negetive value (-*- =  +)
+        int maxProduct = arr[0];
+        int max = arr[0];
+        
+        for(int i = 1; i<n; i++){
+         int temp =  maxProduct;// store before update maxproduct
+         
+         maxProduct = Math.max(arr[i], Math.max(arr[i]*maxProduct, arr[i]*minProduct));
+         // maxProduct = Math.max(curret, Math.max(current*max,current min))
+         minProduct = Math.min(arr[i], Math.min(arr[i]*temp, arr[i]*minProduct));
+         // minProduct = Math.min(curret, Math.min(current*temp,current* min)
+         max = Math.max(max, maxProduct);
+        }
+        return max;
+    }
+}
+
+```
+
+## **🔹 Learnings:**
+
+⭐ Kya naya seekha?
+
+- (Jo logic ya trick pehli baar samjhi ho)
+- (Kaunsi galti hui thi, aur kaise sudhara)
+- (Aage se kaise yaad rakhenge)
+
+## **🔹 Revision Reminder:**
+
+04/05/25
