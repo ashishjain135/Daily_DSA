@@ -1,0 +1,93 @@
+# day12 **Max Circular Subarray Sum**
+
+- DSA revision format
+- **Name: Max circular Subarray sum**
+- **Platform:  gfg160**
+- **Difficulty: hard**
+- **Topic:Array**
+
+## **🔹 Problem Understanding:**
+
+Given an array of integers **arr[]** in a **circular** fashion. Find the **maximum** subarray sum that we can get if we assume the array to be circular.
+
+**Examples:**
+
+```
+Input:arr[] = [8, -8, 9, -9, 10, -11, 12]
+Output:22
+Explanation:Starting from the last element of the array, i.e, 12, and moving in a circular fashion, we have max subarray as 12, 8, -8, 9, -9, 10, which gives maximum sum as 22.
+```
+
+## **🔹 Approach / Logic:**
+
+first find the max subarray sum using kadane algo 
+
+then second function 
+
+circularSum = total sum - minSubarrSum;
+
+## **🔹 Edge Cases:**
+
+if(circularsum == 0) return kadanesum;
+
+**🔹 Code:**
+
+```java
+java
+CopyEdit
+// Your Java solution here
+class Solution {
+
+    // a: input array
+    // n: size of array
+    // Function to find maximum circular subarray sum.
+    public int kadane(int arr[]){
+        int n = arr.length;
+        int max = arr[0];
+        int result = arr[0];
+        for(int i = 1; i< n; i++){
+            if(max<0){
+                max= 0;
+            }
+            max += arr[i];
+            if(result<max){
+                result = max;
+            }
+        }
+        return result;
+    }
+    public int circularSubarraySum(int arr[]) {
+
+        // Your code here
+        int n = arr.length;
+        int totalsum = 0;
+        int currentMin = 0;
+        int minSubArrSum = Integer.MAX_VALUE;
+        int maxKadane = kadane(arr);// step 1 create kadane's Algo 
+        for(int i = 0; i<n; i++){
+            totalsum += arr[i];
+            
+            currentMin = Math.min(arr[i], currentMin+arr[i]);
+            minSubArrSum = Math.min(currentMin, minSubArrSum);
+            
+            
+        }
+        int circularSum = totalsum - minSubArrSum;
+        
+        if(circularSum == 0){
+            return maxKadane;
+        }
+         return Math.max(circularSum, maxKadane);
+        
+    }
+}
+
+```
+
+## **🔹 Learnings:**
+
+⭐ Kya naya seekha?
+
+- (Jo logic ya trick pehli baar samjhi ho)
+- (Kaunsi galti hui thi, aur kaise sudhara)
+- (Aage se kaise yaad rakhenge)
