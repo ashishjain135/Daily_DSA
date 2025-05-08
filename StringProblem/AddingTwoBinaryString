@@ -1,0 +1,87 @@
+- **Name:  add two binary string**
+- **Platform:  gfg**
+- **Difficulty: medium**
+- **Topic:**
+
+## **🔹 Problem Understanding:**
+
+two string s1 and s2 so add and return 
+
+```
+Input:s1 = "1101", s2 = "111"
+Output: 10100
+Explanation:
+ 1101
++ 111
+10100
+```
+
+## **🔹 Approach / Logic:**
+
+while(i≥0 j≥0 carray≠ 0)
+
+int bit1 = (i≥0) ? s1.charAt(i)-’0’:0 // ternary operator condition ? true : false 
+
+char to int 
+
+int sum = bit1+ bit2+ carry
+
+sb.append(sum%2) //current 
+
+carry = sum/2; // update 
+
+ans = sb. reverse().toString();
+
+// remove starting zero 
+
+indx = 0 ;
+
+check ans.charAt(indx)== ‘0’ 
+
+indx++;
+
+return ans.substring(indx)
+
+## **🔹 Edge Cases:**
+
+**🔹 Code:**
+
+```java
+java
+CopyEdit
+// Your Java solution here
+class Solution {
+    public String addBinary(String s1, String s2) {
+        // code here
+        int i = s1.length()-1;
+        int j = s2.length()-1;
+        StringBuilder sb = new StringBuilder();
+        int carry = 0;
+        while(i>= 0 || j>= 0 || carry != 0){
+            int bit1 = (i>=0)?s1.charAt(i) -'0':0;
+            int bit2 = (j>=0) ? s2.charAt(j) - '0':0;
+            int sum = bit1+bit2+carry;
+            sb.append(sum%2);
+            carry = sum/2;
+            i--;
+            j--;
+        }
+        String ans = sb.reverse().toString();
+        // remove starting 000
+        int indx = 0; 
+        while(indx < ans.length()-1 && ans.charAt(indx) == '0'){
+            indx++;
+        }
+        return ans.substring(indx);
+    }
+}
+
+```
+
+## **🔹 Learnings:**
+
+⭐ Kya naya seekha?
+
+- (Jo logic ya trick pehli baar samjhi ho)
+- (Kaunsi galti hui thi, aur kaise sudhara)
+- (Aage se kaise yaad rakhenge)
