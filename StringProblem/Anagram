@@ -1,0 +1,73 @@
+- DSA revision format
+- **Name: Anagram**
+- **Platform:  gfg**
+- **Difficulty: easy**
+- **Topic: Character Count / hashing**
+
+## **🔹 Problem Understanding:**
+
+s1 = “geeks” s2 = “gkese” —> return true;
+
+s1 = “g” s2 = “g” —> return true;
+
+s1 = “hello” s2 = “hello” —> return true;
+
+s1 = “gfg” s2 = “gfge” —> return false;
+
+s1 = “happy” s2 = “sad” —> return false;
+
+## **🔹 Approach / Logic:**
+
+crete a frequency array 
+
+int freq[] = new int[26];
+
+iterate (i>n)
+
+freq[s1.charAt(i) -’a’] ++;
+
+freq[s2.charAt(i) -’a’] —;
+
+## **🔹 Edge Cases:**
+
+(s1.length == s2.length()) 
+
+**🔹 Code:**
+
+```java
+java
+CopyEdit
+// Your Java solution here
+class Solution {
+    // Function is to check whether two strings are anagram of each other or not.
+    public static boolean areAnagrams(String s1, String s2) {
+
+        // Your code here
+        int n = s1.length();
+        int m = s2.length();
+        if(n != m){
+            return false;
+        }
+        int []freq = new int[26];
+        // 26 alphabet
+        for(int i = 0; i<n; i++){
+            freq[s1.charAt(i) - 'a']++;
+            freq[s2.charAt(i) - 'a']--;
+        }
+        for(int count : freq){
+            if(count != 0) return false;
+        }
+        return true;
+    }
+}
+
+```
+
+## **🔹 Learnings:**
+
+⭐ Kya naya seekha?
+
+- (Jo logic ya trick pehli baar samjhi ho)
+    - store in freq array
+- (Kaunsi galti hui thi, aur kaise sudhara)
+- (Aage se kaise yaad rakhenge)
