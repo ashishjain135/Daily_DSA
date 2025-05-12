@@ -1,0 +1,87 @@
+# Day19 palindrom
+
+- DSA revision format
+- **Name:  Min Chars to Add for Palindrome**
+- **Platform:  gfg**
+- **Difficulty: hard**
+- **Topic: pattern Matching**
+
+## **🔹 Problem Understanding:**
+
+Given a string **s**, ****the task is to find the minimum characters to be added at the front to make the string palindrome.
+
+Note: A palindrome string is a sequence of characters that reads the same forward and backward.
+
+**Examples:**
+
+```
+Input:s = "abc"
+Output:2
+Explanation:Add 'b' and 'c' at front of above string to make it palindrome : "cbabc"
+
+```
+
+```
+Input:s = "aacecaaaa"
+Output:2
+Explanation: Add 2 a's at front of above string to make it palindrome : "aaaacecaaaa"
+```
+
+## **🔹 Approach / Logic:**
+
+first creata  str = s+”$”+s.reverse()
+
+then create a LPS(str)
+
+return s.length() - lps[str.length()-1] 
+
+## **🔹 Edge Cases:**
+
+**🔹 Code:**
+
+```java
+java
+CopyEdit
+// Your Java solution here
+
+class Solution {
+    public static int[] LpsArray(String s){
+        int n = s.length();
+        int [] lps = new int[n];
+        int len = 0; 
+        int i = 1;
+        while(i<n){
+            if(s.charAt(i)== s.charAt(len)){
+                len++;
+                lps[i] = len; 
+                i++;
+            }else{
+                if(len != 0){
+                    len = lps[len-1];
+                }else{
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+        
+        return lps; 
+    }
+    public static int minChar(String s) {
+        // Write your code here
+        // step s+"#"+ rev find LPS
+        // last indx of lps  - s.length();
+        String rev = new StringBuilder(s).reverse().toString();
+        String str = s+"#"+rev;
+        int[] lps = LpsArray(str);
+        int lpsval = lps[str.length()-1];
+        return s.length() - lpsval; 
+```
+
+## **🔹 Learnings:**
+
+⭐ Kya naya seekha?
+
+- (Jo logic ya trick pehli baar samjhi ho)
+- (Kaunsi galti hui thi, aur kaise sudhara)
+- (Aage se kaise yaad rakhenge)
