@@ -1,0 +1,117 @@
+# day20 kmp2
+
+- DSA revision format
+- **Name: Strings Rotations of Each Other**
+- **Platform:  gfg**
+- **Difficulty: easy**
+- **Topic:**
+
+## **🔹 Problem Understanding:**
+
+You are given two strings of equal lengths, **s1** and **s2**. The task is to check if **s2** is a rotated version of the string **s1**.
+
+Note: The characters in the strings are in lowercase.
+
+**Examples :**
+
+```
+Input:s1 = "abcd", s2 = "cdab"Output:true
+Explanation:After 2 right rotations, s1 will become equal to s2.
+
+```
+
+```
+Input:s1 = "aab", s2 = "aba"
+Output:true
+Explanation:After 1 left rotation, s1 will become equal to s2.
+
+```
+
+```
+Input:s1 = "abcd", s2 = "acbd"
+Output:false
+Explanation:Strings are not rotations of each other.
+```
+
+## **🔹 Approach / Logic:**
+
+same previous question like txt pattern approach here we create a (s1+s1) then search a substring s2 
+
+## **🔹 Edge Cases:**
+
+if(s1.length() == s2.length()) return false
+
+**🔹 Code:**
+
+```java
+java
+CopyEdit
+// Your Java solution here
+class Solution {
+    // Function to check if two strings are rotations of each other or not.
+    public static int[] lpsArray(String s){
+        int n= s.length();
+        int []lps = new int[n];
+        int len = 0;
+        int i = 1;
+        while(i<n){
+            if(s.charAt(i) == s.charAt(len)){
+                len++;
+                lps[i] = len;
+                i++;
+            }
+            else if(i<n && s.charAt(i) != s.charAt(len)){
+                if(len != 0){
+                    len = lps[len-1];
+                }else{
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+        return lps;
+    }
+    public static boolean matchpattern(String t , String p){
+        int n = t.length();
+        int m = p.length();
+        int lps[] = lpsArray(p);
+        
+        
+        int i = 0;
+        int j = 0;
+        while(i<n && j<m){
+            if(p.charAt(j) == t.charAt(i)){
+                i++;
+                j++;
+                if(j == m){
+                    return true;
+                }
+            }else if(j<m && t.charAt(i) != p.charAt(j)){
+                if(j!= 0){
+                    j = lps[j-1];
+                }else{
+                    i++;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public static boolean areRotations(String s1, String s2) {
+        if(s1.length()!= s2.length()) return false;
+      String str = s1+s1;
+      return matchpattern(str,s2);
+    }
+}
+
+```
+
+## **🔹 Learnings:**
+
+⭐ Kya naya seekha?
+
+- (Jo logic ya trick pehli baar samjhi ho)
+- (Kaunsi galti hui thi, aur kaise sudhara)
+- (Aage se kaise yaad rakhenge)
+
+## **🔹 Revision Reminder:**
