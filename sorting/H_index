@@ -1,0 +1,86 @@
+# day22 Hindex
+
+- DSA revision format
+- **Name:**
+- **Platform:**
+- **Difficulty: easy**
+- **Topic:**
+
+## **🔹 Problem Understanding:**
+
+### H-Index Problem - Revision Notes
+
+**Problem Statement:**
+
+Given an array `citations[]` where each element represents the number of citations for a researcher's paper, find the researcher's **H-Index**.
+
+**H-Index Definition:**
+
+The maximum number `h` such that the researcher has at least `h` papers with at least `h` citations each.
+
+## **🔹 Approach / Logic:**
+
+1. **Sort** the citations array in ascending order.
+2. Initialize `h = 0`.
+3. Traverse the array **from the end** (highest citations to lowest):
+    - For each paper, check if `citations[i] >= h + 1`.
+    - If yes, increment `h` by 1.
+    - Else, stop the loop (no more papers satisfy the condition).
+4. Return `h` as the H-Index.
+
+## **🔹 Edge Cases:**
+
+**🔹 Code:**
+
+```java
+java
+CopyEdit
+// Your Java solution here
+class Solution {
+    // Function to find hIndex
+    public int hIndex(int[] citations) {
+        // code here
+        int n = citations.length;
+        Arrays.sort(citations);
+        int h = 0;
+        for(int i = n-1; i>=0; i--){
+            if(citations[i] >= h+1){
+                h++;
+            }else{
+                break;
+            }
+        }
+        return h;
+    }
+}
+
+```
+
+## **🔹 Learnings:**
+
+⭐ Kya naya seekha?
+
+- (Jo logic ya trick pehli baar samjhi ho)
+    - sort arrays iterate arr[n-1] to arr[0]
+    - then check arr[i] ≥ h+1;
+        - count++;
+    
+    return h; 
+    
+- (Kaunsi galti hui thi, aur kaise sudhara)
+- (Aage se kaise yaad rakhenge)
+    - 
+    
+    ### Time Complexity
+    
+    - Sorting: O(n log n)
+    - Single pass traversal: O(n)
+        
+        **Overall:** O(n log n)
+        
+
+## **🔹 Revision Reminder:**
+
+- Sorting helps to easily count how many papers have citations >= a certain value.
+- The iteration from the highest citation ensures we find the maximum `h` satisfying the condition.
+- This is a common interview problem to test sorting and counting logic.
