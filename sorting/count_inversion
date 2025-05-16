@@ -1,0 +1,137 @@
+### ✅ **Problem Definition:**
+
+Given an array `arr[]`, count the number of **inversions** in it.
+
+An **inversion** is a pair `(i, j)` such that:
+
+- `i < j` and
+- `arr[i] > arr[j]`
+
+---
+
+### 📈 **Why It Matters:**
+
+- Measures how "unsorted" an array is.
+- Sorted array → 0 inversions
+- Reverse sorted array → Maximum inversions = `n*(n-1)/2`
+
+---
+
+### 🔍 **Examples:**
+
+```java
+java
+CopyEdit
+Input:  arr[] = {2, 4, 1, 3, 5}
+Output: 3
+Inversions: (2,1), (4,1), (4,3)
+
+```
+
+---
+
+### 🧠 **Approaches:**
+
+### 1. **Brute Force (Nested Loops)**
+
+- Check all `(i, j)` pairs
+- Time: **O(n²)**
+- Not optimal for large arrays.
+
+### 2. **Efficient – Merge Sort Based**
+
+- Use modified **Merge Sort**
+- Count inversions **while merging**
+- Time: **O(n log n)**
+- Space: O(n) (for temp array)
+
+---
+
+### 🔧 **Key Merge Step Logic:**
+
+During merging:
+
+- If `arr[i] <= arr[j]` → no inversion
+- If `arr[i] > arr[j]` →
+    
+    ⇒ all remaining elements from `i` to `mid` form inversions with `arr[j]`
+    
+    ⇒ Count = `mid - i + 1`
+    
+
+---
+
+### 🔁 **Recursive Steps:**
+
+1. Count inversions in left half
+2. Count in right half
+3. Count inversions while merging
+4. Add all three
+
+---
+
+### 💻 **Code Structure (Java):**
+
+```java
+java
+CopyEdit
+countInversions(arr)
+→ mergeSort(arr, left, right)
+  → mergeSort(...)
+  → mergeSort(...)
+  → merge(...) // count during merge
+→ merge(arr, left,mid, right)
+class Solution {
+    // Function to count inversions in the array.
+    //mergesort
+    public static int mergesort(int[]arr,int left,int right){
+        
+        int count = 0;
+        
+        if(left<right){
+         int mid = (left+right)/2;
+         count += mergesort(arr,left,mid);
+         count += mergesort(arr,mid+1, right);
+         
+         count += merge(arr,left,mid,right);
+        }
+        return count;
+    }
+    public static int merge(int []arr, int left, int mid, int right){
+        int []newArr = new int[right - left +1];
+        int l = left;
+        int m = mid+1;
+        int k = 0;
+        int count = 0;
+        while(l<= mid && m <= right){
+            if(arr[l]<= arr[m]){
+                newArr[k++] = arr[l++];
+                
+            }else{
+                newArr[k++] = arr[m++];
+                count+= (mid - l+1);
+            }
+        }
+        while(l<= mid) newArr[k++] = arr[l++];
+        while(m <= right) newArr[k++] = arr[m++];
+        
+        for(int i = 0 ; i<newArr.length; i++){
+            arr[left+i] = newArr[i];
+        }
+        return count;
+    }
+    static int inversionCount(int arr[]) {
+        // Your Code Here
+        return mergesort(arr,0,arr.length-1);
+    }
+}
+
+```
+
+---
+
+### 🔗 **Tips:**
+
+- Practice dry-running merge sort and track inversion count
+- Commonly asked in interviews (Amazon, Microsoft, etc.)
+- Great example of combining sorting + counting
