@@ -1,0 +1,95 @@
+✅ Problem: Overlapping Intervals
+Given an array of intervals arr[][], merge all overlapping intervals and return the result as a list.
+
+🧠 Example:
+lua
+Copy
+Edit
+Input:  [[1,3], [2,4], [6,8], [9,10]]
+Output: [[1,4], [6,8], [9,10]]
+✅ Key Concepts:
+🔹 Overlapping Intervals:
+Two intervals [a, b] and [c, d] overlap if:
+
+r
+Copy
+Edit
+b >= c
+✅ Steps to Solve:
+Sort the intervals by their start time:
+Arrays.sort(arr, (a, b) -> Integer.compare(a[0], b[0]));
+
+Initialize an empty list:
+List<int[]> merge = new ArrayList<>();
+
+Iterate through sorted intervals:
+
+If merge is empty OR current interval does not overlap → add it.
+
+Else, merge with last interval in list:
+
+java
+Copy
+Edit
+merge.get(merge.size() - 1)[1] = Math.max(lastEnd, currentEnd);
+✅ Java Code:
+java
+Copy
+Edit
+import java.util.*;
+
+class Solution {
+    public List<int[]> mergeOverlap(int[][] arr) {
+        List<int[]> merge = new ArrayList<>();
+
+        Arrays.sort(arr, (a, b) -> Integer.compare(a[0], b[0]));
+
+        for (int[] interval : arr) {
+            if (merge.isEmpty() || merge.get(merge.size() - 1)[1] < interval[0]) {
+                merge.add(interval);
+            } else {
+                merge.get(merge.size() - 1)[1] = Math.max(
+                    merge.get(merge.size() - 1)[1], interval[1]
+                );
+            }
+        }
+
+        return merge;
+    }
+}
+✅ Time & Space Complexity:
+Aspect	Complexity
+Time	O(n log n) → due to sorting
+Space	O(n) → for result list
+
+⚠️ O(n) time only possible if input is already sorted by start time.
+
+🔁 Dry Run Example:
+Input:
+lua
+Copy
+Edit
+[[6,8], [1,9], [2,4], [4,7]]
+After Sorting:
+lua
+Copy
+Edit
+[[1,9], [2,4], [4,7], [6,8]]
+Final Output:
+lua
+Copy
+Edit
+[[1,9]]
+🔎 Common Mistakes:
+❌ Not sorting intervals → causes incorrect merges.
+
+❌ Using merge.size() once and reusing → use merge.size() - 1 inside loop.
+
+❌ Forgetting Math.max() to update the merged interval's end.
+
+✅ Quick Tips:
+Use Arrays.sort() with lambda for custom sorting.
+
+Always check for overlap using lastEnd < currentStart.
+
+Always test with unsorted input.
