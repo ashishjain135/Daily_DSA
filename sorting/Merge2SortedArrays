@@ -1,0 +1,158 @@
+# day27 Merge2sortedArra
+
+## 📘 Gap Method – In-Place Merge of Two Sorted Arrays
+
+### 🧩 Problem Statement
+
+Given two sorted arrays `a[]` (size n) and `b[]` (size m), merge them into sorted order **without using extra space** such that:
+
+- `a[]` contains the first n elements of the merged array
+- `b[]` contains the last m elements
+
+---
+
+### 💡 Why Not Use Extra Space?
+
+In interviews or memory-constrained environments, you may be required to perform operations **in-place**, i.e., with `O(1)` extra space. Using a third array is easy but doesn't meet this constraint.
+
+---
+
+### 🧠 The Gap Method (Inspired by Shell Sort)
+
+The core idea is:
+
+- Start with a large **gap** (initially `ceil((n + m) / 2)`)
+- Compare elements `gap` distance apart and **swap if out of order**
+- Reduce the gap (`ceil(gap / 2)`) and repeat until `gap = 0`
+
+This allows comparing far apart elements, gradually refining the ordering.
+
+---
+
+### 🛠️ Algorithm Steps
+
+### 1. **Initialize the gap:**
+
+```java
+java
+CopyEdit
+int gap = ceil((n + m)/2);
+
+```
+
+### 2. **Loop until gap becomes 0:**
+
+```java
+java
+CopyEdit
+while (gap > 0)
+
+```
+
+### 3. **Step 1: Compare elements in a[]**
+
+Compare and swap if `a[i] > a[i + gap]`
+
+### 4. **Step 2: Compare elements between a[] and b[]**
+
+If `a[i] > b[j]`, swap.
+
+### 5. **Step 3: Compare elements in b[]**
+
+Compare and swap if `b[j] > b[j + gap]`
+
+### 6. **Update the gap**
+
+```java
+java
+CopyEdit
+gap = nextGap(gap);  // gap = (gap/2) + (gap%2)
+
+```
+
+---
+
+### ✅ Java Code (Core Function)
+
+```java
+java
+CopyEdit
+public int nextGap(int gap) {
+    if (gap <= 1) return 0;
+    return (gap / 2) + (gap % 2);
+}
+
+public void mergeArrays(int[] a, int[] b) {
+    int n = a.length, m = b.length;
+    for (int gap = nextGap(n + m); gap > 0; gap = nextGap(gap)) {
+
+        // Step 1: Compare in a[]
+        for (int i = 0; i + gap < n; i++) {
+            if (a[i] > a[i + gap]) {
+                int temp = a[i]; a[i] = a[i + gap]; a[i + gap] = temp;
+            }
+        }
+
+        // Step 2: Compare a[i] and b[j]
+        for (int i = Math.max(0, n - gap), j = gap > n ? gap - n : 0;
+             i < n && j < m; i++, j++) {
+            if (a[i] > b[j]) {
+                int temp = a[i]; a[i] = b[j]; b[j] = temp;
+            }
+        }
+
+        // Step 3: Compare in b[]
+        for (int j = 0; j + gap < m; j++) {
+            if (b[j] > b[j + gap]) {
+                int temp = b[j]; b[j] = b[j + gap]; b[j + gap] = temp;
+            }
+        }
+    }
+}
+
+```
+
+---
+
+### ⏱️ Time and Space Complexity
+
+- **Time Complexity:** `O((n + m) * log(n + m))`
+    
+    (Because gap reduces logarithmically and each pass may do up to n+m comparisons)
+    
+- **Space Complexity:** `O(1)`
+    
+    (No extra array used)
+    
+
+---
+
+### 🧪 Sample Input & Output
+
+### Input:
+
+```java
+java
+CopyEdit
+a = [1, 5, 9, 10, 15, 20]
+b = [2, 3, 8, 13]
+
+```
+
+### Output:
+
+```
+ini
+CopyEdit
+a = [1, 2, 3, 5, 8, 9]
+b = [10, 13, 15, 20]
+
+```
+
+---
+
+### 📌 Key Takeaways
+
+- Efficient and space-optimized solution
+- Great for **interviews**, especially when asked to **avoid extra space**
+- Requires understanding of **index mapping** between two arrays when using a virtual single array concept
