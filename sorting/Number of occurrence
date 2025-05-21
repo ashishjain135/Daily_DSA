@@ -1,0 +1,165 @@
+# Day28 NoOfOccurance
+
+## 📘 **Problem Statement**
+
+Given a **sorted array** `arr[]` and a number `target`, find the **number of occurrences** of `target` in the array.
+
+### 🧾 Example:
+
+**Input:**
+
+`arr[] = [1, 1, 2, 2, 2, 2, 3]`, `target = 2`
+
+**Output:** `4`
+
+**Explanation:** `2` appears **4 times**.
+
+---
+
+## 🔁 **Brute Force Approach**
+
+### 🔧 Logic:
+
+Loop through the array and count how many times the element equals the target.
+
+### 📌 Code:
+
+```java
+java
+CopyEdit
+int countFreq(int[] arr, int target) {
+    int count = 0;
+    for (int num : arr) {
+        if (num == target) {
+            count++;
+        }
+    }
+    return count;
+}
+
+```
+
+### ⏱️ Time Complexity:
+
+- **O(n)** – Linear search through entire array
+- **O(1)** – Space
+
+### ❌ Drawback:
+
+Not optimal for large arrays since it scans every element.
+
+---
+
+## ⚡ **Optimized Approach using Binary Search (O(log n))**
+
+### ✅ Logic:
+
+Since the array is sorted, we can use binary search to:
+
+1. Find the **first occurrence** of `target`
+2. Find the **last occurrence** of `target`
+
+Then:
+
+```
+text
+CopyEdit
+Count = lastIndex - firstIndex + 1
+
+```
+
+---
+
+### 🧠 Binary Search: First and Last Occurrence
+
+### 🔍 First Occurrence
+
+- If `arr[mid] == target`, store `mid` and continue searching **left** (`high = mid - 1`).
+
+### 🔎 Last Occurrence
+
+- If `arr[mid] == target`, store `mid` and continue searching **right** (`low = mid + 1`).
+
+---
+
+### 🧑‍💻 Full Code:
+
+```java
+java
+CopyEdit
+class Solution {
+    int firstIndex(int[] arr, int target) {
+        int result = -1;
+        int low = 0, high = arr.length - 1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] == target) {
+                result = mid;
+                high = mid - 1; // move left
+            } else if (arr[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return result;
+    }
+
+    int lastIndex(int[] arr, int target) {
+        int result = -1;
+        int low = 0, high = arr.length - 1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] == target) {
+                result = mid;
+                low = mid + 1; // move right
+            } else if (arr[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return result;
+    }
+
+    int countFreq(int[] arr, int target) {
+        int first = firstIndex(arr, target);
+        if (first == -1) return 0;
+        int last = lastIndex(arr, target);
+        return last - first + 1;
+    }
+}
+
+```
+
+---
+
+### ⏱️ Time Complexity:
+
+- Binary Search First Occurrence → **O(log n)**
+- Binary Search Last Occurrence → **O(log n)**
+- **Total: O(log n)**
+- **Space: O(1)**
+
+---
+
+### 🧪 Test Cases:
+
+| `arr[]` | `target` | Output |
+| --- | --- | --- |
+| `[1, 1, 2, 2, 2, 2, 3]` | `2` | `4` |
+| `[5, 7, 7, 8, 8, 10]` | `8` | `2` |
+| `[1, 2, 3, 4, 5]` | `6` | `0` |
+| `[1, 1, 1, 1, 1]` | `1` | `5` |
+| `[]` | `3` | `0` |
+
+---
+
+## 🎯 Summary
+Approach	Time Complexity	Space	When to Use?
+Brute Force	O(n)	O(1)	Small input or unsorted array
+Binary Search	O(log n)	O(1)	Sorted array, large inputs
