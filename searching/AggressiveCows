@@ -1,0 +1,158 @@
+# Day33 aggressiveCows
+
+## 🐄 Aggressive Cows – Detailed Revision Notes
+
+---
+
+### 🔶 **Problem Statement**
+
+You are given:
+
+- An array `stalls[]` with **unique integers** representing **stall positions**.
+- An integer `k` – the **number of cows** to place.
+
+👉 Place the `k` cows in these stalls such that the **minimum distance between any two cows is maximized**.
+
+---
+
+### 🔷 **Real-Life Analogy**
+
+Imagine placing aggressive cows in stalls such that no two cows come too close — we need to **maximize the minimum distance** between any two cows.
+
+---
+
+### 🧠 **Approach: Binary Search on Answer**
+
+We don’t search the answer in the `stalls[]` directly. Instead, we perform binary search on the **distance range**.
+
+---
+
+### 🪜 **Step-by-Step Approach**
+
+1. **Sort the stalls** in increasing order.
+2. **Binary search** the answer in the range:
+    - `low = 1` (smallest possible distance)
+    - `high = max possible distance = last stall - first stall`
+3. **Check if it is possible** to place all `k` cows with at least `mid` distance apart.
+4. If possible, store the result and try for a **larger distance**.
+5. If not possible, try for a **smaller distance**.
+
+---
+
+### ⚙️ `check(mid)` Function Logic
+
+Try to greedily place cows in stalls maintaining at least `mid` distance.
+
+```java
+java
+CopyEdit
+static boolean check(int[] stalls, int mid, int k) {
+    int count = 1;
+    int lastPos = stalls[0];
+
+    for (int i = 1; i < stalls.length; i++) {
+        if (stalls[i] - lastPos >= mid) {
+            count++;
+            lastPos = stalls[i];
+        }
+        if (count >= k) return true;
+    }
+    return false;
+}
+
+```
+
+---
+
+### 💻 Full Java Code
+
+```java
+java
+CopyEdit
+import java.util.Arrays;
+
+class Solution {
+    static boolean check(int[] stalls, int mid, int k){
+        int cnt = 1;
+        int pre = stalls[0];
+        for(int i = 1; i < stalls.length; i++){
+            if(stalls[i] - pre >= mid){
+                cnt++;
+                pre = stalls[i];
+            }
+        }
+        return (cnt >= k);
+    }
+
+    public static int aggressiveCows(int[] stalls, int k) {
+        Arrays.sort(stalls);
+        int low = 1;
+        int high = stalls[stalls.length - 1] - stalls[0];
+        int result = 0;
+
+        while(low <= high){
+            int mid = low + (high - low) / 2;
+            if(check(stalls, mid, k)){
+                result = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return result;
+    }
+}
+
+```
+
+---
+
+### 🔍 **Dry Run Example**
+
+**Input:**
+
+`stalls = [1, 2, 4, 8, 9], k = 3`
+
+**Sorted:**
+
+`[1, 2, 4, 8, 9]`
+
+**Binary Search Range:**
+
+`low = 1`, `high = 8`
+
+**Iterations:**
+
+- `mid = 4` → Not possible (only 2 cows placed)
+- `mid = 2` → Possible (3 cows placed)
+- `mid = 3` → Possible (3 cows placed)
+- Final result = `3`
+
+✅ Place cows at 1, 4, and 8 — each at least 3 apart.
+
+---
+
+### ⏱️ Time & Space Complexity
+
+- **Time Complexity:** `O(N log(MaxDistance))`
+    - N for the loop in `check()`
+    - log(MaxDistance) for binary search
+- **Space Complexity:** `O(1)` (no extra space used)
+
+---
+
+### 📚 Similar Problems
+
+- Book Allocation
+- Painters Partition
+- Allocate Minimum Number of Pages
+- Horses Stable Problem
+
+---
+
+### 📌 Key Concepts to Remember
+
+- Greedy + Binary Search on Answer
+- Always sort input positions
+- Apply feasibility check in binary search
+- Understand difference between **searching in array** vs **searching in answer space**
