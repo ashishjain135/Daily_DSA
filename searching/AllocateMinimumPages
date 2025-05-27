@@ -1,0 +1,103 @@
+📘 Problem: Allocate Minimum Pages
+🧩 Problem Statement:
+Given an array arr[] where each element represents the number of pages in a book, and an integer k representing the number of students, allocate books such that:
+
+Each student gets at least one book.
+
+Books are assigned in contiguous order.
+
+No book is assigned to more than one student.
+
+🔁 Objective:
+Minimize the maximum number of pages assigned to a student.
+
+🔍 Constraints:
+Contiguous book allocation only.
+
+One student per segment.
+
+A valid allocation is not possible if k > n (students > books).
+
+💡 Concept: Binary Search on Answer
+Instead of searching through all combinations (which is very slow), use binary search to minimize the maximum number of pages.
+
+📊 Binary Search Boundaries:
+Low (start) = max(arr) → Minimum pages any student must get.
+
+High (end) = sum(arr) → All books to one student.
+
+Why?
+A student can’t get fewer pages than the biggest book.
+
+One student can read all books, so total pages are the upper limit.
+
+✅ Core Idea:
+We guess a number mid (possible max pages per student) and check:
+
+❓Can we allocate books to k students such that no one gets more than mid pages?
+
+✔️ If YES:
+Try a smaller value → move high = mid - 1
+
+❌ If NO:
+Increase pages → move low = mid + 1
+
+🔁 Check Function: isPossible(arr, n, k, mid)
+Steps:
+Initialize studentCount = 1 and currentPages = 0
+
+Traverse array:
+
+If arr[i] > mid: ❌ Not possible
+
+If currentPages + arr[i] > mid: Assign to next student
+
+Else: Add to current student’s pages
+
+Return true if studentCount <= k
+
+🔠 Final Algorithm: findMinimumPages(arr, k)
+plaintext
+Copy
+Edit
+1. If k > n, return -1
+2. Set low = max(arr), high = sum(arr)
+3. Binary Search:
+   - mid = (low + high) / 2
+   - If isPossible(..., mid) → update result, high = mid - 1
+   - Else → low = mid + 1
+4. Return result
+🧮 Time & Space Complexity:
+Component	Complexity
+Time	O(n * log(sum - max))
+Space	O(1)
+
+🧪 Example:
+Input:
+plaintext
+Copy
+Edit
+arr = [12, 34, 67, 90], k = 2
+Allocation Options:
+csharp
+Copy
+Edit
+[12] [34,67,90] → Max = 191  
+[12,34] [67,90] → Max = 157  
+[12,34,67] [90] → Max = 113 ✅ Minimum
+Output:
+Copy
+Edit
+113
+⚠️ Edge Case:
+If k > arr.length, it's impossible to give each student a book.
+
+Output should be -1
+
+🧠 Summary:
+Efficient technique: Binary Search on Answer
+
+Key insight: We’re minimizing the worst-case load (max pages) per student.
+
+Used in many partitioning problems (painters partition, chocolate distribution, etc.)
+
