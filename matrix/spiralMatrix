@@ -1,0 +1,102 @@
+📘 Spiral Traversal of a Matrix – Revision Notes
+✅ Problem Statement
+Given a 2D matrix mat[][] of size n x m, return a list of elements in spiral order starting from the top-left corner and moving clockwise.
+
+🔍 Core Concept
+You move along the matrix in a spiral (clockwise) fashion:
+
+Left to Right → top row
+
+Top to Bottom ↓ rightmost column
+
+Right to Left ← bottom row (if not already traversed)
+
+Bottom to Top ↑ leftmost column (if not already traversed)
+
+After one full round, you shrink the boundaries and repeat the process.
+
+🔁 Boundaries to Track
+top = 0
+
+bottom = n - 1
+
+left = 0
+
+right = m - 1
+
+These pointers help define the current submatrix we are spiraling through.
+
+🔄 Traversal Order & Logic
+java
+Copy
+Edit
+while (top <= bottom && left <= right) {
+    // 1. Traverse left to right
+    for (int i = left; i <= right; i++)
+        result.add(mat[top][i]);
+    top++;
+
+    // 2. Traverse top to bottom
+    for (int i = top; i <= bottom; i++)
+        result.add(mat[i][right]);
+    right--;
+
+    // 3. Traverse right to left (if top <= bottom)
+    if (top <= bottom) {
+        for (int i = right; i >= left; i--)
+            result.add(mat[bottom][i]);
+        bottom--;
+    }
+
+    // 4. Traverse bottom to top (if left <= right)
+    if (left <= right) {
+        for (int i = bottom; i >= top; i--)
+            result.add(mat[i][left]);
+        left++;
+    }
+}
+📌 Important Edge Cases
+Matrix with only 1 row or 1 column
+
+Empty matrix (should return an empty list)
+
+Rectangular matrix (n ≠ m) — boundaries must be carefully managed
+
+🧠 Dry Run Example
+Input:
+java
+Copy
+Edit
+mat = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9]
+]
+Spiral Output:
+csharp
+Copy
+Edit
+[1, 2, 3, 6, 9, 8, 7, 4, 5]
+📈 Time and Space Complexity
+Time Complexity: O(n * m) — Every element is visited exactly once.
+
+Space Complexity: O(n * m) — For storing the output list.
+
+✅ Applications in Real World
+Image processing (layered traversal)
+
+Game development (grid-based maps)
+
+Pattern printing problems
+
+Pathfinding in grids
+
+🧠 Quick Tips for Interviews
+Always check boundaries before each direction to avoid duplicates or IndexOutOfBounds.
+
+Maintain clean and readable loops; logic becomes messy quickly if not modular.
+
+Practice both square and rectangular cases.
+
+Try converting your logic to work on anti-clockwise spiral or reverse spiral for variation.
+
