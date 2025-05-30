@@ -1,0 +1,86 @@
+📘 Revision Notes: Rotate Matrix 90° Anti-Clockwise In-Place
+🔍 Problem Statement
+Given an n x n square matrix, rotate it 90 degrees in anti-clockwise direction, without using extra space.
+
+🧠 Concepts Involved
+Matrix Transposition: Swap rows and columns (flip across the diagonal).
+
+In-place Operation: No extra matrix or array allowed.
+
+Column Reversal: Reverse the elements in each column after transposing.
+
+🔄 Step-by-Step Logic
+✅ Step 1: Transpose the Matrix
+Swap mat[i][j] with mat[j][i] for all i < j.
+
+Converts rows to columns.
+
+📌 Formula:
+mat[i][j] ↔ mat[j][i] when i < j
+
+✅ Step 2: Reverse Each Column
+For each column j, swap elements from top to bottom:
+
+mat[top][j] ↔ mat[bottom][j] until top < bottom
+
+📌 Example
+🔷 Input:
+Copy code
+1 2 3
+4 5 6
+7 8 9
+🔷 After Step 1 (Transpose):
+Copy code
+1 4 7
+2 5 8
+3 6 9
+🔷 After Step 2 (Reverse each column):
+Copy code
+3 6 9
+2 5 8
+1 4 7
+🧾 Java-Style Pseudocode
+java
+Copy code
+void rotate90AntiClockwise(int[][] mat, int n) {
+    // Step 1: Transpose
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            int temp = mat[i][j];
+            mat[i][j] = mat[j][i];
+            mat[j][i] = temp;
+        }
+    }
+
+    // Step 2: Reverse each column
+    for (int j = 0; j < n; j++) {
+        int top = 0, bottom = n - 1;
+        while (top < bottom) {
+            int temp = mat[top][j];
+            mat[top][j] = mat[bottom][j];
+            mat[bottom][j] = temp;
+            top++;
+            bottom--;
+        }
+    }
+}
+✅ Time & Space Complexity
+Aspect	Value
+Time Complexity	O(n^2)
+Space Complexity	O(1) (in-place)
+
+📚 Common Interview Questions Related
+Rotate matrix 90° clockwise
+
+Rotate matrix 180° or 270°
+
+Spiral traversal of a matrix
+
+Flip along diagonals or axes
+
+🧠 Tips to Remember
+Transpose + Reverse Rows → Clockwise rotation
+
+Transpose + Reverse Columns → Anti-clockwise rotation
+
+Always test on 3x3 or 4x4 matrices to visualize steps
