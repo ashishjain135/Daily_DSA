@@ -1,0 +1,103 @@
+📘 Matrix Search (Sorted Rows and Columns) – Revision Notes
+🔸 Problem Statement:
+Given an n x m 2D matrix mat[][], where:
+
+Each row is sorted in increasing order.
+
+Each column is also sorted in increasing order.
+
+Find whether a target element x is present in the matrix.
+
+🔹 Brute Force Approach:
+Traverse all elements.
+
+Time Complexity: O(n × m)
+🔻 Not optimal when n, m are large.
+
+✅ Optimal Approach: Staircase Search / Top-Right Corner Strategy
+🔸 Steps:
+Start at the top-right corner:
+
+java
+Copy
+Edit
+i = 0;
+j = m - 1;
+While i < n and j >= 0:
+
+If mat[i][j] == x → return true
+
+If mat[i][j] > x → move left (j--)
+
+If mat[i][j] < x → move down (i++)
+
+If not found, return false
+
+🔹 Why This Works:
+Rows and columns are sorted.
+
+Starting from mat[0][m-1] gives us:
+
+Left = smaller
+
+Down = bigger
+
+Thus, we eliminate one row or one column in each step ➝ linear search path.
+
+⏱️ Time & Space Complexity:
+Complexity	Value
+Time	O(n + m)
+Space	O(1)
+
+🧠 Dry Run Example:
+Input:
+
+java
+Copy
+Edit
+mat = {
+  {3, 30, 38},
+  {20, 52, 54},
+  {35, 60, 69}
+}, x = 60
+Start at mat[0][2] = 38
+→ x > 38 → move down → mat[1][2] = 54
+→ x > 54 → move down → mat[2][2] = 69
+→ x < 69 → move left → mat[2][1] = 60 ✅ Found!
+
+✅ Final Java Code:
+java
+Copy
+Edit
+class Solution {
+    public static boolean matSearch(int mat[][], int x) {
+        int n = mat.length;
+        int m = mat[0].length;
+        int i = 0, j = m - 1;
+
+        while (i < n && j >= 0) {
+            if (mat[i][j] == x) return true;
+            else if (mat[i][j] > x) j--;
+            else i++;
+        }
+        return false;
+    }
+}
+🔁 Edge Cases:
+Empty matrix → handle with if (n == 0 || m == 0)
+
+Duplicates? ✅ Works fine, search continues until found
+
+Non-square matrix? ✅ Works with any n x m
+
+🧩 Variations for Practice:
+Return coordinates of x
+
+Search in matrix with only row-wise sorted (not columns)
+
+Search in a matrix with binary values (0, 1)
+
+Leetcode-style matrix problems
+
+📚 Keywords:
+matrix search, 2D sorted matrix, staircase search, O(n+m), efficient search, Java DSA
