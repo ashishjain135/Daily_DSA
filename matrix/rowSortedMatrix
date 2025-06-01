@@ -1,0 +1,79 @@
+🧩 Problem Statement
+Given a 2D matrix mat[][] of size n x m, where each row is sorted in increasing order (but columns are not necessarily sorted), find whether a given integer x is present in the matrix.
+
+🔍 Key Property
+For all valid i, j:
+➤ mat[i][j] <= mat[i][j+1]
+✅ Each row is individually sorted
+❌ Column values may not follow any order
+
+❌ Why Not Use Staircase Search?
+Staircase search (start from top-right) requires both rows and columns to be sorted.
+
+In this case, columns might not be sorted, so we can’t decide direction just by comparing.
+
+✅ Correct Approach: Binary Search in Each Row
+🔸 Logic:
+Loop through each row
+
+Apply binary search on that row
+
+If x found in any row ➝ return true
+
+If not found in all rows ➝ return false
+
+🔹 Time and Space Complexity
+Aspect	Value
+Time	O(n × log m)
+Space	O(1)
+
+Where n = number of rows, m = number of columns
+
+✅ Final Java Code
+java
+Copy
+Edit
+class Solution {
+    public boolean searchRowMatrix(int[][] mat, int x) {
+        int n = mat.length;
+        int m = mat[0].length;
+
+        for (int i = 0; i < n; i++) {
+            int low = 0, high = m - 1;
+
+            while (low <= high) {
+                int mid = low + (high - low) / 2;
+
+                if (mat[i][mid] == x) return true;
+                else if (mat[i][mid] < x) low = mid + 1;
+                else high = mid - 1;
+            }
+        }
+
+        return false;
+    }
+}
+🧪 Dry Run Example
+Input:
+mat = [[3, 4, 9], [2, 5, 6], [9, 25, 27]], x = 9
+
+Row 0 ➝ binary search: found at index 2 ✅
+
+Output: true
+
+⚠️ Common Mistakes
+Mistake	Why it's Wrong
+Using low < high in binary search	Misses the last element
+Not updating low = mid + 1	Can cause infinite loop
+Using j instead of mid	Typo – j isn't defined in scope
+
+🧠 Tip
+If the matrix is fully sorted as 1D (like Leetcode 74), you can flatten the matrix and use single binary search. That’s O(log(n × m)) time.
+
+📌 Summary
+Feature	Value
+Matrix type	Only row-wise sorted
+Search method	Binary search per row
+Time	O(n × log m)
+Works with duplicates?	✅ Yes
+Works with column sorted matrix?	✅, but not optimal
