@@ -1,0 +1,89 @@
+🔍 Problem Statement
+Given a strictly sorted matrix of size n x m, where:
+
+Each row is strictly increasing
+
+The first element of each row is greater than the last element of the previous row
+→ Check if a number x exists in the matrix.
+
+📌 Matrix Properties
+This is not just a row-wise sorted matrix. It has two important rules:
+
+mat[i][j] < mat[i][j+1] (strict row-wise increase)
+
+mat[i][0] > mat[i-1][m-1] (strict inter-row increase)
+
+✅ So, the matrix can be flattened into a 1D sorted array
+Example:
+Matrix:
+[ [ 1,  5,  9],
+  [14, 20, 21],
+  [30, 34, 43] ]
+
+Flattened:
+[1, 5, 9, 14, 20, 21, 30, 34, 43]
+✅ Optimal Approach: 1D Binary Search
+🔸 Logic:
+Consider 1D index mid between 0 to n*m - 1
+
+Convert 1D index to 2D:
+
+row = mid / m
+
+col = mid % m
+
+Compare mat[row][col] with x
+
+✅ Java Code:
+class Solution {
+    public boolean searchMatrix(int[][] mat, int x) {
+        int n = mat.length;
+        int m = mat[0].length;
+
+        int low = 0, high = n * m - 1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            int midElement = mat[mid / m][mid % m];
+
+            if (midElement == x) return true;
+            else if (midElement < x) low = mid + 1;
+            else high = mid - 1;
+        }
+
+        return false;
+    }
+}
+⏱️ Time and Space Complexity
+Metric	Value
+Time	O(log(n × m))
+Space	O(1)
+
+🧠 Why Not Use Staircase Search?
+Staircase search works when:
+
+Each row is sorted ➕
+
+Each column is also sorted ➕
+
+❌ Here, columns aren’t necessarily sorted.
+✅ Better to use 1D binary search due to strict ordering.
+
+🧪 Example Dry Run
+Input:
+mat = [[1, 5, 9], [14, 20, 21], [30, 34, 43]], x = 20
+
+Step	mid	mat[mid/m][mid%m]	Comparison
+1	4	20	✅ Found
+
+⚠️ Common Mistakes
+Mistake	Fix
+Using mat[mid][mid]	Must map 1D to 2D properly: mat[mid / m][mid % m]
+Using row-wise binary search	Slower – takes O(n * log m) time
+Confusing this with column-sorted matrix	They're different!
+
+📌 Summary Table
+Matrix Type	Best Approach	Time Complexity
+Row-wise sorted only	Binary search per row	O(n × log m)
+Row + column sorted	Staircase search	O(n + m)
+Strictly sorted (Leetcode-74)	Flattened binary search	O(log(n × m))
