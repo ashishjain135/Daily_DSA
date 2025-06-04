@@ -1,0 +1,108 @@
+## Problem Statement:
+
+Given an array `arr[]` of positive integers and an integer `target`, determine if **there exist two distinct indices** such that:
+
+```
+bash
+CopyEdit
+arr[i] + arr[j] == target  (where i ≠ j)
+
+```
+
+---
+
+## 🔍 Approaches:
+
+### 🔹 1. **Brute Force Approach**
+
+- **Idea**: Use two nested loops and check all pairs.
+- **Time Complexity**: O(n²)
+- **Space Complexity**: O(1)
+
+### 🔧 Pseudocode:
+
+```java
+java
+CopyEdit
+for i = 0 to n-1:
+    for j = i+1 to n-1:
+        if arr[i] + arr[j] == target:
+            return true
+return false
+
+```
+
+---
+
+### 🔹 2. **Optimized Approach using HashSet** ✅
+
+- **Idea**: For each element `num`, check if `target - num` exists in a HashSet.
+- **Time Complexity**: O(n)
+- **Space Complexity**: O(n)
+
+### 🔧 Java Code:
+
+```java
+java
+CopyEdit
+public static boolean hasPairWithSum(int[] arr, int target) {
+    HashSet<Integer> seen = new HashSet<>();
+    for (int num : arr) {
+        int complement = target - num;
+        if (seen.contains(complement)) return true;
+        seen.add(num);
+    }
+    return false;
+}
+
+```
+
+### 🧠 Why it works?
+
+- For every element `num`, if `target - num` has already been seen, then the pair exists.
+- Store only elements you’ve already passed, ensuring distinct indices.
+
+---
+
+## 🧪 Example Dry Run:
+
+### Input: `arr = [1, 4, 45, 6, 10, 8]`, `target = 16`
+
+- Seen = {}
+- 1 → needs 15 → not in set → add 1
+- 4 → needs 12 → not in set → add 4
+- 45 → needs -29 → not in set → add 45
+- 6 → needs 10 → not in set → add 6
+- 10 → needs 6 → ✅ Found in set → return `true`
+
+---
+
+## 📌 Edge Cases:
+
+- Array has < 2 elements → return `false`
+- All elements same → ensure distinct indices
+- Multiple pairs possible → return `true` on finding first
+
+---
+
+## 🧩 Variations to Practice:
+
+1. **Return the actual pair** instead of boolean.
+2. **Count all unique pairs** with given sum.
+3. Find if **triplets** exist (Three Sum problem).
+4. Handle **duplicate elements** gracefully.
+
+---
+
+## 📚 Key Concepts Used:
+
+- Hashing (`HashSet`)
+- Array Traversal
+- Complement logic: `target - current`
+
+---
+
+## 🏁 Final Notes:
+
+- This is a classic **coding interview problem** — always optimize for O(n) using hash-based data structures.
+- Mastering this improves understanding of **two-pointer**, **hash map**, and **array pattern questions**.
