@@ -1,0 +1,175 @@
+# Day44 triplet sum
+
+### **Find All Triplets with Zero Sum**
+
+### 🧩 **Problem Statement**
+
+Given an integer array `arr[]`, **find all unique triplets of indices (i, j, k)** such that:
+
+- `arr[i] + arr[j] + arr[k] == 0`
+- And **i < j < k**
+- Return the list of such index triplets
+
+---
+
+### 📌 **Example**
+
+### Input:
+
+```java
+java
+CopyEdit
+arr = [0, -1, 2, -3, 1]
+
+```
+
+### Output:
+
+```java
+java
+CopyEdit
+[[0, 1, 4], [2, 3, 4]]
+
+```
+
+### Explanation:
+
+- arr[0] + arr[1] + arr[4] = 0 + (-1) + 1 = 0
+- arr[2] + arr[3] + arr[4] = 2 + (-3) + 1 = 0
+
+---
+
+### ✅ **Brute Force Approach (O(n³))**
+
+- Use 3 nested loops: i, j, k
+- Check if sum of arr[i] + arr[j] + arr[k] == 0 and i<j<k
+- Very slow for large arrays
+
+---
+
+### 🚀 **Optimized Approach (O(n²)) Using HashMap**
+
+### 💡 Strategy:
+
+- Fix the first element at index `i`
+- Use a `HashMap<Integer, List<Integer>>` to store value → list of indices
+- For each index `k > i`, compute:
+    
+    `remain = -(arr[i] + arr[k])`
+    
+- If `remain` exists in the map and its index `j` satisfies `i < j < k`, then store triplet `[i, j, k]`
+
+---
+
+### 🔐 **Avoiding Duplicates**
+
+- Use `Set<List<Integer>>` to avoid repeated triplets
+- This ensures result only contains unique index combinations
+
+---
+
+### 🧠 **Important Concepts Used**
+
+| Concept | Description |
+| --- | --- |
+| HashMap | To quickly check for needed complement |
+| List inside HashMap | To handle duplicate values at different indices |
+| HashSet of List | To store unique triplets without repetition |
+| Index Ordering | Ensured by checking `i < j < k` |
+
+---
+
+### ✅ **Final Working Java Code**
+
+```java
+java
+CopyEdit
+import java.util.*;
+
+class Solution {
+    public List<List<Integer>> findTriplets(int[] arr) {
+        int n = arr.length;
+        Set<List<Integer>> resultSet = new HashSet<>();
+
+        for (int i = 0; i < n - 2; i++) {
+            Map<Integer, List<Integer>> map = new HashMap<>();
+
+            for (int k = i + 1; k < n; k++) {
+                int remain = - (arr[i] + arr[k]);
+
+                if (map.containsKey(remain)) {
+                    for (int j : map.get(remain)) {
+                        if (i < j && j < k) {
+                            resultSet.add(Arrays.asList(i, j, k));
+                        }
+                    }
+                }
+
+                map.putIfAbsent(arr[k], new ArrayList<>());
+                map.get(arr[k]).add(k);
+            }
+        }
+
+        return new ArrayList<>(resultSet);
+    }
+}
+
+```
+
+---
+
+### ⚙️ **Time & Space Complexity**
+
+| Complexity | Value |
+| --- | --- |
+| Time | O(n²) |
+| Space (Map+Set) | O(n²) worst case |
+
+---
+
+### ✅ **Testing**
+
+**Input:**
+
+```java
+java
+CopyEdit
+arr = {0, -1, 2, -3, 1}
+
+```
+
+**Output:**
+
+```java
+java
+CopyEdit
+[[0, 1, 4], [2, 3, 4]]
+
+```
+
+---
+
+### 🧪 Extra Test Case
+
+**Input:**
+
+arr = {1, -1, -1, 0}
+
+```
+
+**Possible Output:**
+
+```java
+java
+CopyEdit
+[[0, 1, 3], [0, 2, 3]]
+
+```
+
+---
+
+### 📌 **Tips for Interviews / Exams**
+
+- If values are required instead of indices, use a 2-pointer technique on sorted arrays
+- Always handle **duplicates** smartly (Set or sort)
+- Focus on **index logic** when asked for positions
