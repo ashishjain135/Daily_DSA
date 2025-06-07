@@ -1,0 +1,90 @@
+🔍 Problem Statement
+Given two arrays a[] and b[], return a list of elements that are common in both arrays (intersection).
+
+Each element in the result must be unique, even if repeated in input.
+
+Output order does not matter. The driver code will sort it.
+
+✅ Sample Examples
+Example 1:
+Input:
+a[] = [1, 2, 1, 3, 1]
+b[] = [3, 1, 3, 4, 1]
+Output:
+[1, 3]
+Explanation:
+1 and 3 appear in both arrays. We keep only one occurrence.
+
+Example 2:
+Input:
+a[] = [1, 1, 1]
+b[] = [1, 1, 1, 1]
+Output:
+[1]
+
+🧠 Approach (Using HashSet)
+🔸 Step-by-Step
+Create Set setA:
+Add all elements of array a[] to this set to ensure uniqueness.
+
+Create Set resultSet:
+Traverse array b[], and for each element, check:
+
+If it exists in setA, add it to resultSet.
+
+Convert resultSet to List:
+Return new ArrayList<>(resultSet) as final output.
+
+💻 Java Code
+java
+Copy
+Edit
+import java.util.*;
+
+class Solution {
+    public ArrayList<Integer> intersectionWithDuplicates(int[] a, int[] b) {
+        Set<Integer> setA = new HashSet<>();
+        Set<Integer> resultSet = new HashSet<>();
+
+        for (int num : a) {
+            setA.add(num);
+        }
+
+        for (int num : b) {
+            if (setA.contains(num)) {
+                resultSet.add(num);
+            }
+        }
+
+        return new ArrayList<>(resultSet);
+    }
+}
+📊 Time & Space Complexity
+Category	Complexity
+🕒 Time Complexity	O(n + m)
+🧠 Space Complexity	O(n + k)
+
+Where n = size of array a[], m = size of array b[], and k = unique common elements
+
+✅ Why HashSet?
+Eliminates duplicates automatically
+
+Provides O(1) lookup time
+
+Ideal for intersection and union problems
+
+🔁 Alternative Approach (Optional)
+If memory is limited, and arrays are sorted:
+
+Use two pointers to traverse both arrays
+
+Skip duplicates manually
+
+📌 Interview Tips
+Always ask if duplicates should be included
+
+Ask whether order matters
+
+Use Set when you need uniqueness
+
+Practice both unsorted and sorted versions
