@@ -1,0 +1,90 @@
+🔰 Topic: Union of Two Arrays
+🎯 Goal: Count distinct elements present in both arrays combined.
+🧩 Problem Explanation
+Given two arrays a[] and b[], find the number of unique elements in the union of these two arrays.
+
+Duplicates may be present within a[], within b[], or between a[] and b[]
+
+Output should count only distinct values
+
+📥 Input:
+Two arrays: a[] and b[]
+e.g., a[] = [1, 2, 3, 4, 5], b[] = [1, 2, 3]
+
+📤 Output:
+Count of unique elements in union
+➤ Output: 5 (as union = {1, 2, 3, 4, 5})
+
+🧠 Key Concepts Used:
+Set (HashSet in Java): Stores only unique values.
+
+Time Complexity:
+➤ O(n + m), where n = size of a[], m = size of b[]
+
+Space Complexity:
+➤ O(n + m) for storing elements in the set.
+
+✅ Java Code:
+java
+Copy
+Edit
+class Solution {
+    public static int findUnion(int a[], int b[]) {
+        HashSet<Integer> result = new HashSet<>();
+        
+        // Add all elements of array a
+        for(int val : a) {
+            result.add(val);
+        }
+        
+        // Add all elements of array b
+        for(int val : b) {
+            result.add(val);
+        }
+        
+        // Size of set = count of distinct elements
+        return result.size();
+    }
+}
+🧪 Dry Run Example:
+Example 1:
+text
+Copy
+Edit
+Input:
+a[] = [1, 2, 3, 4, 5]
+b[] = [1, 2, 3]
+
+Set after a[]: {1, 2, 3, 4, 5}
+Set after b[]: {1, 2, 3, 4, 5} → No change
+
+Output: 5
+Example 2:
+text
+Copy
+Edit
+Input:
+a[] = [85, 25, 1, 32, 54, 6]
+b[] = [85, 2]
+
+Set after a[]: {85, 25, 1, 32, 54, 6}
+Set after b[]: {85, 25, 1, 32, 54, 6, 2}
+
+Output: 7
+⚠️ Common Mistakes to Avoid:
+❌ Counting duplicates as separate elements
+
+❌ Not using a set or incorrect data structure (e.g., list)
+
+❌ Mixing up union with intersection (intersection → common only)
+
+📌 Notes Recap:
+Concept	Details
+Union	All unique elements from both arrays
+Duplicates	Automatically removed using Set
+Data Structure	HashSet<Integer> in Java
+Time Complexity	O(n + m)
+Space Complexity	O(n + m)
+
+📝 Remember:
+If the question had asked for the intersection instead of union, you'd need to store one array in a set and check for matches in the second.
