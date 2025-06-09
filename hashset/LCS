@@ -1,0 +1,85 @@
+📘 Topic: Longest Consecutive Subsequence (LCS)
+🔹 Problem Statement:
+Given an array of integers, return the length of the longest subsequence such that elements are consecutive integers, in any order.
+
+🔸 Subsequence ≠ Subarray
+(Elements can be non-adjacent, only values matter)
+
+🧠 Core Concept:
+✅ Key Idea:
+Store all elements in a HashSet to allow O(1) lookup.
+
+For each element x, check if x - 1 exists.
+
+If not, then x is the start of a new consecutive sequence.
+
+Expand the sequence: check x + 1, x + 2, ...
+
+Keep track of the maximum length.
+
+🧮 Dry Run Example:
+Input: [2, 6, 1, 9, 4, 5, 3]
+Set: {1, 2, 3, 4, 5, 6, 9}
+Longest Sequence: 1 → 2 → 3 → 4 → 5 → 6
+Output: 6
+
+🔧 Java Code:
+java
+Copy
+Edit
+class Solution {
+    public int longestConsecutive(int[] arr) {
+        int n = arr.length;
+        Set<Integer> set = new HashSet<>();
+
+        for (int i = 0; i < n; i++) {
+            set.add(arr[i]);  // store unique elements
+        }
+
+        int longSubSeq = 0;
+
+        for (int ele : set) {
+            // if ele is the start of a sequence
+            if (!set.contains(ele - 1)) {
+                int currEle = ele;
+                int currentSeq = 1;
+
+                while (set.contains(currEle + 1)) {
+                    currEle++;
+                    currentSeq++;
+                }
+
+                longSubSeq = Math.max(longSubSeq, currentSeq);
+            }
+        }
+
+        return longSubSeq;
+    }
+}
+⏱️ Time & Space Complexity:
+Complexity	Value
+⏱️ Time	O(N) — Each element visited once
+🧠 Space	O(N) — For HashSet storage
+
+🔄 Variations:
+Print actual sequence (need sorting or backtracking)
+
+Handle negative numbers (no change needed)
+
+No HashSet allowed → Sort the array & count streaks (O(N log N))
+
+❗ Common Mistakes:
+Using subarray logic instead of subsequence
+
+Forgetting to check for duplicates
+
+Assuming array is sorted (it's not)
+
+Trying to index into a HashSet (invalid)
+
+💬 Important Interview Hints:
+HashSet = perfect for membership check
+
+Always check for num - 1 absence to avoid duplicate sequence checks
+
+Sequence must be consecutive numbers, not necessarily in order
