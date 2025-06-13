@@ -1,0 +1,167 @@
+# Day50 Xor
+
+### **Count Subarrays with given XOR**
+
+## ✅ **Problem Statement:**
+
+Given an array of integers `arr[]` and a number `k`, count the number of subarrays having XOR of their elements as `k`.
+
+---
+
+## ✅ **Example:**
+
+**Input:**
+
+`arr = [4, 2, 2, 6, 4]`
+
+`k = 6`
+
+**Output:**
+
+`4`
+
+**Explanation:**
+
+Subarrays having XOR = 6 are:
+
+- [4, 2]
+- [4, 2, 2, 6, 4]
+- [2, 2, 6]
+- [6]
+
+---
+
+## ✅ **Brute Force Approach (NOT Recommended in Interviews)**
+
+- Generate all possible subarrays.
+- Calculate XOR for each subarray.
+- Compare with `k` and count.
+
+**Time Complexity:** O(N²) or O(N³)
+
+**Space Complexity:** O(1)
+
+---
+
+## ✅ **Optimized Approach: Prefix XOR + HashMap**
+
+### 🔥 **Main Concepts:**
+
+- **XOR Properties:**
+    - `a ^ a = 0`
+    - `a ^ 0 = a`
+    - `a ^ b ^ a = b`
+- **Prefix XOR (preXor):**
+    - preXor[i] = XOR of elements from index 0 to i.
+- To find if any subarray's XOR is `k`, we use:
+    
+    ```
+    ruby
+    CopyEdit
+    If preXor[j] ^ preXor[i-1] = k
+    => preXor[i-1] = preXor[j] ^ k
+    
+    ```
+    
+- We store prefix XOR frequencies in HashMap while traversing.
+
+---
+
+### 🔥 **Algorithm:**
+
+1. Initialize:
+    - `count = 0`
+    - `xor = 0`
+    - HashMap `map` to store frequency of prefix XOR.
+2. Loop through array:
+    - Update `xor = xor ^ arr[i]`
+    - If `xor == k` → increment count
+    - Calculate `required = xor ^ k`
+    - If `required` exists in map → add its frequency to count
+    - Update `map` with current `xor`
+3. Finally return count.
+
+---
+
+### 🔥 **Java Code:**
+
+```java
+java
+CopyEdit
+import java.util.HashMap;
+
+public class CountSubarraysWithGivenXOR {
+    public static int countSubarrays(int[] arr, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int count = 0, xor = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            xor ^= arr[i];
+            if (xor == k)
+                count++;
+
+            int requiredXor = xor ^ k;
+            if (map.containsKey(requiredXor))
+                count += map.get(requiredXor);
+
+            map.put(xor, map.getOrDefault(xor, 0) + 1);
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {4, 2, 2, 6, 4};
+        int k = 6;
+        System.out.println("Count of subarrays: " + countSubarrays(arr, k));
+    }
+}
+
+```
+
+---
+
+### 🔥 **Dry Run Example:**
+
+| i | arr[i] | xor | required (xor^k) | map | count |
+| --- | --- | --- | --- | --- | --- |
+| 0 | 4 | 4 | 2 | {4:1} | 0 |
+| 1 | 2 | 6 | 0 | {4:1,6:1} | 1 |
+| 2 | 2 | 4 | 2 | {4:2,6:1} | 1 |
+| 3 | 6 | 2 | 4 | {4:2,6:1,2:1} | 3 |
+| 4 | 4 | 6 | 0 | {4:2,6:2,2:1} | 4 |
+
+Final `count = 4`
+
+---
+
+## ✅ **Time & Space Complexity:**
+
+- **Time:** O(N)
+- **Space:** O(N)
+
+---
+
+## ✅ **Why Prefix XOR is Powerful in XOR Problems?**
+
+- XOR is reversible → allows us to quickly check if any previous subarray gives required XOR.
+- Avoids re-computation like brute force.
+- HashMap helps in frequency counting for quick lookups.
+
+---
+
+## ✅ **Similar Problems for Practice:**
+
+- Subarrays with Given Sum
+- Longest Subarray with Given XOR
+- Subarrays with Equal Number of 0s and 1s
+- Count Number of Nice Subarrays
+
+---
+
+🔥 **DSA Interview Tip:**
+
+Whenever you see **subarray + XOR + count** → think of **Prefix XOR + HashMap**.
+
+---
+
+Ye pure **revision notes** tumhare final exam / placement ke liye direct ready hai 🚀
