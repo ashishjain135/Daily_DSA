@@ -1,0 +1,141 @@
+🔶 Problem Statement:
+Given a sorted array arr[] and a target value, count the total number of triplets (i, j, k) such that:
+
+arr[i] + arr[j] + arr[k] == target
+
+i < j < k
+
+🔶 Example:
+Input:
+arr = [-3, -1, -1, 0, 1, 2], target = -2
+
+Output:
+4
+
+Triplets:
+
+(-3, 0, 1)
+
+(-3, -1, 2)
+
+(-3, -1, 2)
+
+(-1, -1, 0)
+
+🔶 Constraints Highlights:
+Sorted array.
+
+Expected Time Complexity: O(N²)
+
+Space Complexity: O(1) or O(N) (depends on approach).
+
+🔶 Approaches
+1️⃣ Brute Force Approach
+Use 3 nested loops to check every triplet.
+
+Time Complexity: O(N³)
+
+Space Complexity: O(1)
+
+java
+Copy
+Edit
+int count = 0;
+for (int i = 0; i < n; i++) {
+    for (int j = i+1; j < n; j++) {
+        for (int k = j+1; k < n; k++) {
+            if (arr[i] + arr[j] + arr[k] == target)
+                count++;
+        }
+    }
+}
+return count;
+2️⃣ Two Pointer Approach (Optimal for Sorted Array)
+Fix i, and apply two-pointer (j, k) to find pairs.
+
+Time Complexity: O(N²)
+
+Space Complexity: O(1)
+
+java
+Copy
+Edit
+int count = 0;
+for (int i = 0; i < n - 2; i++) {
+    int j = i + 1, k = n - 1;
+    while (j < k) {
+        int sum = arr[i] + arr[j] + arr[k];
+        if (sum == target) {
+            count++;
+            j++;
+            k--;
+        } else if (sum < target) {
+            j++;
+        } else {
+            k--;
+        }
+    }
+}
+return count;
+3️⃣ HashMap Based Approach (Alternative Optimal O(N²))
+🔑 Key Idea:
+Fix i.
+
+For every k (from i+1 onwards), check if target - arr[i] - arr[k] is already present in HashMap.
+
+HashMap stores previous elements (i.e., possible j values).
+
+🔑 Why i<j<k is automatically handled?
+Since k loop moves forward, and map is updated after checking, j will always be before k.
+
+🔑 Time Complexity: O(N²)
+🔑 Space Complexity: O(N)
+java
+Copy
+Edit
+class Solution {
+    public int countTriplets(int[] arr, int target) {
+        int n = arr.length;
+        int count = 0;
+
+        for (int i = 0; i < n - 2; i++) {
+            Map<Integer, Integer> map = new HashMap<>();
+            for (int k = i + 1; k < n; k++) {
+                int remain = target - arr[i] - arr[k];
+                count += map.getOrDefault(remain, 0);
+                map.put(arr[k], map.getOrDefault(arr[k], 0) + 1);
+            }
+        }
+        return count;
+    }
+}
+🔶 Core Learnings:
+🔥 Fixed pointer + 2 Pointer or HashMap is a powerful combo for such problems.
+
+🔥 i<j<k handled implicitly if map update is after checking.
+
+🔥 For sorted arrays, Two Pointer is most space efficient.
+
+🔥 HashMap approach can be useful even for unsorted arrays (with care).
+
+🔶 Interviewer Can Ask Variations:
+What if array is not sorted?
+
+What if duplicates are allowed or not?
+
+Return actual triplets, not just count.
+
+Solve for 4-Sum / K-Sum variations.
+
+🔶 Bonus Practice Problems:
+3Sum (Leetcode 15)
+
+3Sum Closest (Leetcode 16)
+
+4Sum (Leetcode 18)
+
+K Sum variations
+
+✅ Pro Tip:
+Ye pattern interview me kaafi baar repeat hota hai — isliye HashMap + Two Pointer dono master karna zaruri hai.
+
