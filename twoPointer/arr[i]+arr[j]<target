@@ -1,0 +1,181 @@
+# day52 arr[i]+arr[j]<target
+
+**Topic:** Count Pairs whose Sum is Less than Target
+
+**Technique:** Sorting + Two Pointer
+
+Problem : 
+
+### **Count Pairs whose sum is less than target**
+
+Given an array **arr[]** and an integer **target**. You have to find the number of pairs in the array whose sum is strictly less than the **target**.
+
+Example: 
+
+```
+Input:arr[] = [2, 1, 8, 3, 4, 7, 6, 5], target = 7
+Output:6
+Explanation:There are 6 pairs whose sum is less than 7: (2, 1), (2, 3), (2, 4), (1, 3), (1, 4) and (1, 5).
+```
+
+---
+
+### 🔶 **Problem Understanding:**
+
+- Given: Array `arr[]` of size `n` and integer `target`.
+- Task: Count the number of pairs `(i, j)` such that:
+    
+    ```
+    css
+    CopyEdit
+    arr[i] + arr[j] < target
+    i < j
+    
+    ```
+    
+
+---
+
+### 🔶 **Naive Approach (Brute Force):**
+
+- Use two nested loops to check every pair.
+- Count if sum < target.
+
+```java
+java
+CopyEdit
+int count = 0;
+for(int i=0; i<n; i++){
+    for(int j=i+1; j<n; j++){
+        if(arr[i] + arr[j] < target)
+            count++;
+    }
+}
+
+```
+
+**Time Complexity:**
+
+- O(N²) → Not optimal for large inputs.
+
+---
+
+### 🔶 **Optimized Approach (Two Pointer + Sorting):**
+
+### 🔸 **Core Idea:**
+
+- Sort the array first:
+    
+    `Arrays.sort(arr);`
+    
+- Initialize two pointers:
+    
+    `i = 0`, `j = n-1`
+    
+- Iterate while `i < j`:
+    - If `arr[i] + arr[j] < target`
+        
+        → All pairs between `i` and `j` are valid
+        
+        → Add `(j - i)` to count
+        
+        → Move `i++` (because increasing i can still give valid pairs)
+        
+    - Else `j--` (to decrease sum)
+
+---
+
+### 🔸 **Pseudocode:**
+
+```java
+java
+CopyEdit
+sort(arr);
+i = 0; j = n-1;
+count = 0;
+
+while(i < j):
+    if(arr[i] + arr[j] < target):
+        count += (j - i)
+        i++
+    else:
+        j--
+
+```
+
+---
+
+### 🔸 **Time Complexity:**
+
+- Sorting: O(N log N)
+- Two Pointer: O(N)
+- **Total: O(N log N)** ✅
+
+### 🔸 **Space Complexity:**
+
+- O(1) (In-place sorting if allowed)
+
+---
+
+### 🔶 **Why Sorting Works?**
+
+- After sorting:
+    
+    ```
+    CopyEdit
+    arr[0] <= arr[1] <= ... <= arr[n-1]
+    
+    ```
+    
+- If `arr[i] + arr[j] < target`, then any value between `arr[i]` and `arr[j-1]` also gives valid pairs with `arr[i]`.
+- No need to check individually — count all together using `(j - i)`.
+
+---
+
+### 🔶 **Example Dry Run:**
+
+**Input:**
+
+arr = [7, 2, 5, 3], target = 8
+
+**Step 1:** Sort → [2, 3, 5, 7]
+
+i = 0, j = 3, count = 0
+
+- arr[0] + arr[3] = 2 + 7 = 9 (> 8) → j--
+- arr[0] + arr[2] = 2 + 5 = 7 (< 8) → count += (2 - 0) = 2 → i++
+- arr[1] + arr[2] = 3 + 5 = 8 (not less than target) → j--
+
+**Final Count = 2**
+
+---
+
+### 🔶 **Edge Cases to Remember:**
+
+- Empty array → count = 0
+- Array with single element → count = 0
+- Duplicate elements → logic still works correctly
+
+---
+
+### 🔶 **Key Learnings Today:**
+
+- Two pointer problems almost always require sorted arrays.
+- Always think if pairs can be counted in groups instead of one-by-one.
+- `count += (j - i)` trick is very powerful in pair-sum type problems.
+
+---
+
+### 🔶 **Variants of this Problem:**
+
+| Variant | Approach |
+| --- | --- |
+| Count pairs with sum **equal** to target | HashMap / Binary Search |
+| Count pairs with sum **greater** than target | Same two pointer with reverse condition |
+| Count unique pairs (no duplicates) | Set usage |
+
+---
+
+✅ **Mastered Today:**
+
+Two Pointer + Sorting + Pair Count Optimization 🚀
