@@ -1,0 +1,145 @@
+Given an array **arr[]** and a number **target**, find a pair of elements (a, b) in **arr[],** where a<=b whose sum is closest to **target.Note:** Return the pair in sorted order and if there are multiple such pairs return the pair with maximum absolute difference. If no such pair exists return an empty array.
+
+**Examples:**
+
+```
+Input:arr[] = [10, 30, 20, 5], target = 25
+Output: [5, 20]
+Explanation: As 5 + 20 = 25 is closest to 25.
+```
+
+## **Problem Statement Recap**
+
+> Given an array of integers and a target sum, find the pair of elements whose sum is closest to the target.
+> 
+> - If multiple pairs have the same closest sum, return the one with the **maximum absolute difference** between the numbers.
+
+---
+
+## ✅ **Key Requirements**
+
+- Return a list of two integers.
+- Sum of the pair must be as close as possible to the `target`.
+- If there are multiple such pairs with the same difference to `target`, pick the one with the **largest difference** between the pair elements.
+
+---
+
+## 💡 **Approach Overview**
+
+### Step-by-Step Breakdown:
+
+1. **Edge Case Handling:**
+    - If the array has fewer than 2 elements, return an empty list. You can’t form a pair.
+2. **Sorting the Array:**
+    - Sorting helps in using the **two-pointer technique** effectively (O(n log n) time).
+3. **Two-Pointer Technique:**
+    - Set two pointers:
+        
+        `i = 0` (start) and `j = n - 1` (end).
+        
+    - Move pointers inward while checking pairs:
+        - Calculate `sum = arr[i] + arr[j]`.
+        - Compute `diff = Math.abs(sum - target)`.
+4. **Decision Criteria:**
+    - If current `diff` is smaller than the smallest found so far → update the result.
+    - If current `diff` equals minimum but has **larger internal difference** between numbers → update the result.
+5. **Pointer Movement:**
+    - If `sum < target`, increment `i` to increase the sum.
+    - If `sum >= target`, decrement `j` to reduce the sum.
+
+---
+
+## 🧠 **Core Concepts Used**
+
+| Concept | Description |
+| --- | --- |
+| **Sorting** | Ensures array is in order for two-pointer traversal. |
+| **Two-pointer approach** | Efficiently finds closest pair in O(n) after sorting. |
+| **Greedy Update Rule** | Always update when a better (closer or more distant pair) match is found. |
+| **Math.abs()** | Used to find absolute differences. |
+
+---
+
+## 🧪 **Example Walkthrough**
+
+### Input:
+
+```java
+java
+CopyEdit
+arr = [10, 22, 28, 29, 30, 40], target = 54
+
+```
+
+### 
+
+```java
+class Solution {
+    public List<Integer> sumClosest(int[] arr, int target) {
+        // code here
+        ArrayList<Integer> result = new ArrayList<>();
+        int n = arr.length;
+        if(n < 2){
+            return result;
+        }
+        Arrays.sort(arr);
+        int i = 0;
+        int j = n-1;
+        int min = Integer.MAX_VALUE; // max value
+        int Absdiff = -1;
+        while(i<j){
+            int sum = arr[i]+arr[j];
+            int diff = Math.abs(sum - target);
+            if(diff < min || (diff == min && Math.abs(arr[i] - arr[j]) > Absdiff)){
+                result.clear();
+                result.add(arr[i]);
+                result.add(arr[j]);
+                min = diff; // update min = diff
+                Absdiff = Math.abs(arr[i] - arr[j]);
+            }
+            if(sum < target){
+                i++;
+            }else{
+                j--;
+            }
+        }
+        return result;
+    }
+}
+```
+
+### Steps:
+
+- Sorted array: `[10, 22, 28, 29, 30, 40]`
+- Pairs evaluated:
+    - 10 + 40 = 50 → diff = 4
+    - 22 + 30 = 52 → diff = 2
+    - 28 + 29 = 57 → diff = 3
+    - Best match: `22 + 30 = 52` (min diff = 2)
+
+---
+
+## ⏱️ **Time & Space Complexity**
+
+| Aspect | Complexity |
+| --- | --- |
+| **Time** | `O(n log n)` (due to sorting) + `O(n)` (two pointers) ⇒ **O(n log n)** |
+| **Space** | `O(1)` (excluding result list) |
+
+---
+
+## 🧹 **Code Quality Tips**
+
+- Use clear variable names: `minDiff`, `bestPairDiff`, etc.
+- Consider adding comments for each decision block.
+- Handle null or empty array edge cases gracefully.
+
+---
+
+## 🧠 **Possible Follow-Ups**
+
+1. Modify the function to return **all such closest pairs**.
+2. Extend to return **k closest pairs**.
+3. Adapt for arrays with **negative numbers** (already supported).
+4. Return **indices** instead of values.
+5. What if the array is **unsorted but very large and streaming**?
