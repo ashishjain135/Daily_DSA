@@ -1,0 +1,128 @@
+🔶 Problem Statement
+You're given:
+
+A sorted array arr[] (can contain duplicates)
+
+A target sum value
+
+👉 Goal: Count the number of distinct index pairs (i, j) such that arr[i] + arr[j] == target and i < j.
+
+🔷 Naive Approach (Brute Force)
+Use two loops to try all pairs.
+
+Time Complexity: O(n^2)
+
+Not efficient for large inputs.
+
+🔷 Optimized Approach: Two Pointers
+✅ When to Use: Array is sorted!
+🔁 Two Pointer Strategy
+Initialize:
+
+java
+Copy
+Edit
+int i = 0, j = n - 1;
+While i < j, do:
+
+Let sum = arr[i] + arr[j]
+
+Compare sum to target
+
+If sum < target: do i++
+
+If sum > target: do j--
+
+If sum == target:
+
+Case 1: If arr[i] == arr[j]
+
+Count total elements from i to j, say k = j - i + 1
+
+Use combination formula: count += (k * (k - 1)) / 2
+
+Exit loop
+
+Case 2: If arr[i] != arr[j]
+
+Count frequency of arr[i] and arr[j]
+
+Let left = freq of arr[i], right = freq of arr[j]
+
+count += left * right
+
+Move pointers accordingly
+
+✅ Final Java Code
+java
+Copy
+Edit
+class Solution {
+    int countPairs(int arr[], int target) {
+        int n = arr.length;
+        int count = 0;
+        int i = 0, j = n - 1;
+
+        while (i < j) {
+            int sum = arr[i] + arr[j];
+
+            if (sum == target && arr[i] == arr[j]) {
+                int k = j - i + 1;
+                count += (k * (k - 1)) / 2; // nC2 combinations
+                break;
+            } else if (sum == target) {
+                int left = 1, right = 1;
+                while (i + 1 < j && arr[i] == arr[i + 1]) {
+                    left++;
+                    i++;
+                }
+                while (j - 1 > i && arr[j] == arr[j - 1]) {
+                    right++;
+                    j--;
+                }
+                count += (left * right);
+                i++;
+                j--;
+            } else if (sum < target) {
+                i++;
+            } else {
+                j--;
+            }
+        }
+        return count;
+    }
+}
+🧠 Key Concepts Revised
+Concept	Description
+Two Pointer	Efficient for sorted arrays.
+Frequency Count	Needed when duplicates exist.
+Combinatorics	Use nC2 = n(n-1)/2 for duplicate pairs.
+Time Complexity	O(n) — Each pointer moves at most once.
+Space Complexity	O(1) — No extra space used.
+
+✍️ Example Dry Run
+Input:
+java
+Copy
+Edit
+arr = [-1, 1, 5, 5, 7]
+target = 6
+Pairs:
+
+(1,5), (1,5), (-1,7)
+
+Output: 3 pairs
+
+⚠️ Common Mistakes
+Using count++ for every match (won’t work with duplicates).
+
+Forgetting to move both i and j after processing duplicates.
+
+Not handling arr[i] == arr[j] correctly.
+
+📌 Summary
+Two-pointer is powerful when array is sorted.
+
+Think in terms of counts, not just pairs.
+
+Mastering these edge cases builds real problem-solving skill.
