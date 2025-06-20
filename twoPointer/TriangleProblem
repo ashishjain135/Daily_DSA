@@ -1,0 +1,144 @@
+# Day55 triangleProblem
+
+Problem : 
+
+### **Count the number of possible triangles**
+
+Given an integer array **arr[]**. Find the number of triangles that can be formed with three different array elements as lengths of three sides of the triangle.
+
+> A triangle with three given sides is only possible if sum of any two sides is always greater than the third side.
+> 
+
+**Examples:**
+
+```
+Input: arr[] = [4, 6, 3, 7]
+Output: 3
+Explanation: There are three triangles possible [3, 4, 6], [4, 6, 7] and [3, 6, 7]. Note that [3, 4, 7] is not a possible triangle.
+```
+
+A valid triangle must satisfy:
+
+> ✅ Triangle Inequality Rule:
+> 
+> 
+> For any 3 sides a, b, c →
+> 
+> `a + b > c`, `a + c > b`, and `b + c > a`
+> 
+
+But since we **sort** the array, we only need to check:
+
+> 🔑 arr[i] + arr[j] > arr[k] where i < j < k
+> 
+
+---
+
+### 📊 **Constraints:**
+
+- Size of array: `n ≤ 10³` (Can afford `O(n²)` solution)
+- Elements: Positive integers only
+
+---
+
+### 🧠 **Brute Force Approach:**
+
+- Try all triplets using 3 nested loops.
+- For each `(i, j, k)`, check triangle inequality.
+- ❌ **Time Complexity: O(n³)** → Too slow for large `n`
+
+---
+
+### ⚡ **Optimized Approach (Two Pointer + Sorting):**
+
+1. **Sort** the array.
+2. Fix one element as the **largest side** `arr[k]`.
+3. Use two pointers `i` and `j` to find valid pairs before it.
+
+### 🔄 **Logic:**
+
+For sorted `arr`:
+
+- If `arr[i] + arr[j] > arr[k]` →
+    
+    ✅ All elements between `i` and `j-1` will also form triangles with `arr[k]`
+    
+    ➤ Add `(j - i)` to count
+    
+    ➤ Move `j--` to try smaller second side
+    
+- Else ➤ Move `i++` to try larger first side
+
+---
+
+### ✅ **Final Code (Java):**
+
+```java
+java
+CopyEdit
+import java.util.Arrays;
+
+class Solution {
+    static int countTriangles(int arr[]) {
+        Arrays.sort(arr);
+        int n = arr.length, count = 0;
+
+        for (int k = n - 1; k >= 2; k--) {
+            int i = 0, j = k - 1;
+            while (i < j) {
+                if (arr[i] + arr[j] > arr[k]) {
+                    count += (j - i);
+                    j--;
+                } else {
+                    i++;
+                }
+            }
+        }
+        return count;
+    }
+}
+
+```
+
+---
+
+### 🧪 **Dry Run Example:**
+
+Input: `arr = [4, 6, 3, 7]`
+
+After sorting: `arr = [3, 4, 6, 7]`
+
+1. Fix `k = 3 (arr[k] = 7)`, `i = 0`, `j = 2`
+    - `3+6=9 > 7` → ✅ Add (2 - 0) = 2
+    - Now `j = 1`, `3+4=7 ⊄ 7` → i++
+2. Fix `k = 2 (arr[k] = 6)`, `i = 0`, `j = 1`
+    - `3+4=7 > 6` → ✅ Add (1 - 0) = 1
+
+✅ Total = 3 valid triangles → `[3, 4, 6]`, `[3, 6, 7]`, `[4, 6, 7]`
+
+---
+
+### 🧮 **Time & Space Complexity:**
+
+| Operation | Complexity |
+| --- | --- |
+| Sorting | O(n log n) |
+| Two Pointer Search | O(n²) |
+| Space | O(1) (in-place) ✅ |
+
+---
+
+### 📘 **Hinglish Summary:**
+
+- Triangle tabhi ban sakta hai jab **koi bhi do side ka sum** third side se **bada ho**.
+- Sorted array se hum sirf ek condition check karte hain: `arr[i] + arr[j] > arr[k]`
+- Fix karte hain sabse badi side ko `k` par, aur `i`, `j` se valid pairs nikalte hain.
+- Jab bhi valid pair mile to `(j - i)` triangles banenge, kyunki sorted array ka fayda milta hai.
+
+---
+
+### 📚 **Use-Cases / Interview Insights:**
+
+- 🔹 Based on **Greedy + Two Pointer**
+- 🔹 Asked in tech interviews (Amazon, Adobe, Paytm)
+- 🔹 Great for testing understanding of triangle inequality and pointer optimization
