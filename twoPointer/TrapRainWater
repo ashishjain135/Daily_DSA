@@ -1,0 +1,144 @@
+# Day59 **TrapRainWater**
+
+Given an array **arr[]** with non-negative integers representing the height of blocks. If the width of each block is 1, compute how much water can be trapped between the blocks during the rainy season.
+
+**Examples:**
+
+```
+Input:arr[] = [3, 0, 1, 0, 4, 0 2]
+Output:10
+Explanation:Total water trapped = 0 + 3 + 2 + 3 + 0 + 2 + 0 = 10 units.
+```
+
+### 📌 **Problem Statement:**
+
+Given an array `arr[]` representing the heights of blocks (non-negative integers), where the **width of each block is 1**, find how much water can be trapped **between** the blocks after raining.
+
+---
+
+### 🔍 **Example:**
+
+```
+makefile
+Copy code
+Input: arr[] = [3, 0, 1, 0, 4, 0, 2]
+Output: 10
+
+```
+
+**Explanation:**
+
+Water trapped at each index:
+
+- Index 1 → min(3, 4) - 0 = 3
+- Index 2 → min(3, 4) - 1 = 2
+- Index 3 → min(3, 4) - 0 = 3
+- Index 5 → min(4, 2) - 0 = 2
+    
+    **Total = 3 + 2 + 3 + 2 = 10 units**
+    
+
+---
+
+### ❌ **Brute Force Approach (Not Recommended)**
+
+- For each block, find max to its left and right
+- Compute: `min(leftMax, rightMax) - arr[i]`
+
+**Time:** O(n²)
+
+**Space:** O(1)
+
+---
+
+### ✅ **Optimized Approach (Using Extra Space)**
+
+1. Create `leftMax[]` and `rightMax[]` arrays
+2. Preprocess max from left and right
+3. Final water trapped at i = `min(leftMax[i], rightMax[i]) - arr[i]`
+
+**Time:** O(n)
+
+**Space:** O(n)
+
+---
+
+### 🔥 **Optimal Two-Pointer Approach** (📌 Expected in Interview)
+
+✅ **Time Complexity:** O(n)
+
+✅ **Space Complexity:** O(1)
+
+### 🛠️ Algorithm:
+
+- Initialize:
+    
+    ```java
+    java
+    Copy code
+    int left = 0, right = n - 1;
+    int leftMax = 0, rightMax = 0;
+    int water = 0;
+    
+    ```
+    
+- Loop while `left < right`:
+    - If `arr[left] < arr[right]`
+        - If `arr[left] >= leftMax`: update `leftMax`
+        - Else: add `leftMax - arr[left]` to water
+        - Move `left++`
+    - Else
+        - If `arr[right] >= rightMax`: update `rightMax`
+        - Else: add `rightMax - arr[right]` to water
+        - Move `right--`
+
+---
+
+### ✅ **Java Code:**
+
+```java
+java
+Copy code
+class Solution {
+    public int trap(int[] height) {
+        int left = 0, right = height.length - 1;
+        int leftMax = 0, rightMax = 0;
+        int water = 0;
+
+        while (left < right) {
+            if (height[left] < height[right]) {
+                if (height[left] >= leftMax) {
+                    leftMax = height[left];
+                } else {
+                    water += leftMax - height[left];
+                }
+                left++;
+            } else {
+                if (height[right] >= rightMax) {
+                    rightMax = height[right];
+                } else {
+                    water += rightMax - height[right];
+                }
+                right--;
+            }
+        }
+        return water;
+    }
+}
+
+```
+
+---
+
+### 🔑 **Key Concepts to Remember:**
+
+- Two-pointer approach avoids extra space
+- Always trap water using **minimum** of left and right boundaries
+- Use max tracking variables, not arrays
+- Commonly asked in FAANG interviews
+
+---
+
+### 🧠 **Tip for Interviews:**
+
+Before jumping to code, explain the brute force → space optimized → two-pointer optimized flow. Interviewers love the progression of thought!
