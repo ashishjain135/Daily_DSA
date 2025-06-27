@@ -1,0 +1,138 @@
+# Day60 MostWater
+
+### **Container With Most Water**
+
+### 🔸 Problem Statement:
+
+Given an array `arr[]` of non-negative integers, where each element represents the height of a vertical line on the x-axis, find the **maximum amount of water** that can be contained between **any two lines**.
+
+📌 Water is contained between two lines and the x-axis, and **only two lines at a time can form the container**.
+
+---
+
+### 📥 Input:
+
+An array `arr[]` of length `n` with non-negative integers.
+
+### 📤 Output:
+
+An integer representing the **maximum water area** that can be stored between any two lines.
+
+---
+
+## 🔍 **Concept:**
+
+The amount of water between any two lines is:
+
+```
+
+Area = min(height[i], height[j]) * (j - i)
+
+```
+
+- `min()` → because water can’t go higher than the shorter line.
+- `(j - i)` → the width between the two lines.
+
+---
+
+## ✅ **Optimal Approach: Two Pointer Technique**
+
+### 💡 Intuition:
+
+Start with two pointers at both ends of the array:
+
+- `left = 0`, `right = n - 1`
+- Calculate the area and update max
+- Move the pointer with **shorter height** inward, hoping for a taller line and possibly a larger area.
+
+---
+
+### 🧾 Step-by-step Algorithm:
+
+1. Initialize `left = 0`, `right = n - 1`, `maxWater = 0`
+2. While `left < right`:
+    - `height = min(arr[left], arr[right])`
+    - `width = right - left`
+    - `area = height * width`
+    - Update `maxWater = max(maxWater, area)`
+    - If `arr[left] < arr[right]` → move `left++`
+    - Else → move `right--`
+3. Return `maxWater`
+
+---
+
+### 🧠 Dry Run Example:
+
+**Input:** `[1, 5, 4, 3]`
+
+**Step 1:** (1, 3) → height = 1, width = 3 → area = 3
+
+**Step 2:** (5, 3) → height = 3, width = 2 → area = 6 → ✅ max
+
+**Step 3:** (5, 4) → height = 4, width = 1 → area = 4
+
+**Result:** `6`
+
+---
+
+## ⏱️ Time and Space Complexity:
+
+| Metric | Value |
+| --- | --- |
+| Time Complexity | `O(n)` |
+| Space Complexity | `O(1)` |
+
+Efficient for large arrays.
+
+---
+
+## ⚠️ Edge Cases:
+
+- All same height → widest width gives max area
+- Decreasing/increasing height sequences
+- Array length < 2 → No water can be trapped
+
+---
+
+## 🔧 Java Code (Optimized):
+
+```java
+
+class Solution {
+    public int maxWater(int arr[]) {
+        int left = 0, right = arr.length - 1;
+        int maxWater = 0;
+
+        while (left < right) {
+            int height = Math.min(arr[left], arr[right]);
+            int width = right - left;
+            int area = height * width;
+            maxWater = Math.max(maxWater, area);
+
+            if (arr[left] < arr[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return maxWater;
+    }
+}
+
+```
+
+---
+
+## 📌 Summary:
+
+- Use **greedy two pointer** approach
+- Always calculate area using **shorter height**
+- Shift the pointer with smaller height for better results
+
+---
+
+🧾 **Revision Tip:** Always remember:
+
+> “Wider base and taller minimum height = Maximum water.”
+>
