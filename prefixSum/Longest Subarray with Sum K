@@ -1,0 +1,134 @@
+Problem : - Longest Subarray with sum k
+Given an array arr[] containing integers and an integer k, your task is to find the length of the longest subarray where the sum of its elements is equal to the given value k. If there is no subarray with sum equal to k, return 0.
+
+Examples:
+
+Input: arr[] = [10, 5, 2, 7, 1, -10], k = 15
+Output: 6
+Explanation: Subarrays with sum = 15 are [5, 2, 7, 1], [10, 5] and [10, 5, 2, 7, 1, -10]. The length of the longest subarray with a sum of 15 is 6.
+Input: arr[] = [-5, 8, -14, 2, 4, 12], k = -5
+Output: 5
+Explanation: Only subarray with sum = -5 is [-5, 8, -14, 2, 4] of length 5.
+Input: arr[] = [10, -10, 20, 30], k = 5
+Output: 0
+Explanation: No subarray with sum = 5 is present in arr[].
+
+
+🧠 Approaches:
+✅ 1. Brute Force – O(n²)
+🔸 Idea:
+Try all subarrays using two nested loops.
+
+Keep track of the sum, and whenever sum == k, update the max length.
+
+🔹 Code Sketch:
+
+int maxLen = 0;
+for (int i = 0; i < n; i++) {
+    int sum = 0;
+    for (int j = i; j < n; j++) {
+        sum += arr[j];
+        if (sum == k) {
+            maxLen = Math.max(maxLen, j - i + 1);
+        }
+    }
+}
+⚠️ Time Complexity: O(n²)
+⚠️ Space: O(1)
+✅ Works, but not efficient for large inputs
+✅ 2. Optimized Approach using Prefix Sum + HashMap – O(n)
+🔸 Core Idea:
+Use a HashMap to store the first occurrence of each prefix sum.
+
+If prefixSum - k exists, it means a subarray with sum k ends at current index.
+
+🔹 Prefix Sum Logic:
+If sum(i) - sum(j) == k
+⟹ sum(j+1 to i) == k
+
+🔹 Steps:
+Initialize sum = 0, maxLen = 0
+
+Traverse array:
+
+Add current element to sum
+
+If sum == k, update maxLen = i + 1
+
+If (sum - k) exists in HashMap:
+
+Calculate length: i - map.get(sum - k)
+
+Update maxLen
+
+If sum not in map, store (sum, index)
+
+🔹 Java Code:
+java
+
+import java.util.HashMap;
+
+class Solution {
+    public int longestSubarray(int[] arr, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int sum = 0, maxLen = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+
+            if (sum == k)
+                maxLen = i + 1;
+
+            if (map.containsKey(sum - k))
+                maxLen = Math.max(maxLen, i - map.get(sum - k));
+
+            if (!map.containsKey(sum))
+                map.put(sum, i);
+        }
+
+        return maxLen;
+    }
+}
+✅ Time Complexity: O(n)
+✅ Space: O(n) (for the map)
+🟢 Example Dry Run:
+Input:
+arr = [10, 5, 2, 7, 1, -10], k = 15
+
+i	arr[i]	sum	sum-k	map	Action	maxLen
+0	10	10	-5	{10:0}	store 10	0
+1	5	15	0	{10:0,15:1}	sum==k → maxLen=2	2
+2	2	17	2		store 17	2
+3	7	24	9		store 24	2
+4	1	25	10	hit → i - 0 = 4, maxLen=4	4	
+5	-10	15	0	hit → i - (-1) = 6, maxLen=6	6	
+
+✅ Answer: 6
+
+⚠️ Edge Cases:
+Case	Output
+All positive elements	Works
+Contains negative elements	Works
+No subarray sums to k	Return 0
+Multiple subarrays possible	Return length of longest one
+
+📌 Interviewer Can Ask:
+Can you do it in O(n)? (Hint toward prefix sum)
+
+What if elements are all positive? (Then sliding window works)
+
+How does negative number affect your prefix logic?
+
+🧪 Practice More:
+GFG: Longest Subarray with Sum K
+
+Leetcode: Subarray Sum Equals K (variation with count instead of length)
+
+Practice with arrays having negative/positive/mixed values.
+
+🔚 Final Tip:
+Prefix Sum + HashMap is a deadly combo for many array-based problems – master it for interviews!
+
+
+
+
