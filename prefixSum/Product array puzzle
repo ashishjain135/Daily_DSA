@@ -1,0 +1,124 @@
+Problem : Product array puzzle
+Given an array, arr[] construct a product array, res[] where each element in res[i] is the product of all elements in arr[] except arr[i]. Return this resultant array, res[].
+Note: Each element is res[] lies inside the 32-bit integer range.
+
+Examples:
+
+Input: arr[] = [10, 3, 5, 6, 2]
+Output: [180, 600, 360, 300, 900]
+Explanation: For i=0, res[i] = 3 * 5 * 6 * 2 is 180.
+For i = 1, res[i] = 10 * 5 * 6 * 2 is 600.
+For i = 2, res[i] = 10 * 3 * 6 * 2 is 360.
+For i = 3, res[i] = 10 * 3 * 5 * 2 is 300.
+For i = 4, res[i] = 10 * 3 * 5 * 6 is 900.
+
+
+
+Input: arr[] = [12, 0]
+Output: [0, 12]
+Explanation: For i = 0, res[i] is 0.
+For i = 1, res[i] is 12.
+
+
+🧠 Core Logic – Prefix & Suffix Product Trick
+We can't use division, so we split the multiplication into two parts:
+
+✅ Left Product:
+Each element i stores product of all elements before i.
+
+
+left[i] = arr[0] * arr[1] * ... * arr[i - 1];
+✅ Right Product:
+Each element i stores product of all elements after i.
+
+
+right[i] = arr[i + 1] * arr[i + 2] * ... * arr[n - 1];
+Finally:
+
+
+result[i] = left[i] * right[i];
+📦 Dry Run Example (arr = [1, 2, 3, 4])
+
+Left Product:  [1, 1, 2, 6]
+Right Product: [24, 12, 4, 1]
+Result:        [24, 12, 8, 6]
+
+
+💻 Code (Java)
+
+public class Solution {
+    public static int[] lproduct(int[] arr) {
+        int n = arr.length;
+        int[] result = new int[n];
+        result[0] = 1;
+        for (int i = 1; i < n; i++) {
+            result[i] = result[i - 1] * arr[i - 1];
+        }
+        return result;
+    }
+
+    public static int[] rproduct(int[] arr) {
+        int n = arr.length;
+        int[] result = new int[n];
+        result[n - 1] = 1;
+        for (int i = n - 2; i >= 0; i--) {
+            result[i] = result[i + 1] * arr[i + 1];
+        }
+        return result;
+    }
+
+    public static int[] productExceptSelf(int[] arr) {
+        int n = arr.length;
+        int[] left = lproduct(arr);
+        int[] right = rproduct(arr);
+        int[] result = new int[n];
+        for (int i = 0; i < n; i++) {
+            result[i] = left[i] * right[i];
+        }
+        return result;
+    }
+}
+⚡ Space Optimization (Follow-up)
+You can reduce space to O(1) extra (ignoring output array):
+
+
+public int[] productExceptSelf(int[] nums) {
+    int n = nums.length;
+    int[] result = new int[n];
+    
+    result[0] = 1;
+    for (int i = 1; i < n; i++) {
+        result[i] = result[i - 1] * nums[i - 1];
+    }
+    
+    int right = 1;
+    for (int i = n - 1; i >= 0; i--) {
+        result[i] = result[i] * right;
+        right *= nums[i];
+    }
+    
+    return result;
+}
+📊 Time and Space Complexity
+Metric	Value
+Time Complexity	O(n)
+Space Complexity	O(n) (can be reduced to O(1) extra)
+
+🧩 Variations & Follow-ups:
+What if 0 is present in array?
+✅ This approach handles it correctly (0 causes 0 product at one index).
+
+Solve using only output array, no left[] or right[] separately
+✅ Use rolling right product while reusing result[].
+
+🧠 Key Takeaways
+Great example of prefix-suffix technique
+
+Must-know pattern for interviews
+
+Teaches how to handle constraints like “no division” smartly
+
+🔖 Tags for Quick Revision:
+Arrays | Prefix Sum | Suffix Product | Space Optimization | No Division Allowed
+
+
