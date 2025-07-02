@@ -1,0 +1,110 @@
+Problem : Reverse a Linkedln List
+Given the head of a linked list, the task is to reverse this list and return the reversed head.
+
+Examples:
+
+Input: head: 1 -> 2 -> 3 -> 4 -> NULL
+Output: head: 4 -> 3 -> 2 -> 1 -> NULL
+🧠 Concept Behind:
+A singly linked list only points forward, so we need to manually reverse the .next pointer of each node to point backward.
+This must be done without using extra space (in-place reversal).
+
+✅ Approach: Iterative Pointer Manipulation
+We use three pointers:
+
+curr → Current node in traversal
+
+prev → Node that comes before current (initially null)
+
+temp → Used to store curr.next temporarily (to not lose track)
+
+🔁 Step-by-Step Execution:
+Assume list: 1 -> 2 -> 3 -> 4 -> null
+
+Initialization:
+prev = null
+
+curr = head (1)
+
+Iteration 1:
+temp = curr.next → 2
+
+curr.next = prev → 1.next = null
+
+prev = curr → 1
+
+curr = temp → 2
+
+List: 1 -> null, now move to 2
+
+Iteration 2:
+temp = 3
+
+2.next = 1
+
+prev = 2
+
+curr = 3
+
+List: 2 -> 1 -> null
+
+Repeat until curr == null, and return prev (which is now head of reversed list)
+
+📌 Final Java Code:
+
+class Solution {
+    Node reverseList(Node head) {
+        Node curr = head;
+        Node prev = null;
+
+        while (curr != null) {
+            Node temp = curr.next;  // Step 1
+            curr.next = prev;       // Step 2
+            prev = curr;            // Step 3
+            curr = temp;            // Step 4
+        }
+
+        return prev; // New head
+    }
+}
+⏱ Time & Space Complexity:
+Type	Complexity
+Time Complexity	O(n)
+Space Complexity	O(1)
+
+✅ In-place algorithm
+✅ Efficient for large linked lists
+
+🔍 Important Use Cases in Interviews:
+Reverse entire linked list
+
+Reverse a sub-list (between m and n)
+
+Reverse in groups of K nodes
+
+Detect or remove cycles (Floyd’s algorithm builds on similar pointer logic)
+
+Clone linked list with random pointers
+
+🚀 Learning Outcome:
+Mastery over pointer manipulation
+
+Strong foundation for tackling advanced linked list problems
+
+Clean code practice with dry run habit
+
+🧪 Practice Platforms:
+LeetCode: "Reverse Linked List"
+
+GeeksforGeeks: "Reverse a Linked List"
+
+InterviewBit: "Reverse Linked List"
+
+📝 Bonus Tip for Interviews:
+While explaining this in interviews:
+
+Always explain pointer movement visually or using a dry-run table.
+
+Mention that it’s in-place and uses constant space.
+
+Discuss edge cases: empty list, one node, multiple nodes.
